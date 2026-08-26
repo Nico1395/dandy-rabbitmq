@@ -6,5 +6,6 @@
   <Project Path="DandyRabbitMQ.Connectivity\DandyRabbitMQ.Connectivity.csproj" />
   <Project Path="DandyRabbitMQ.Consumer/DandyRabbitMQ.Consumer.csproj" />
   <Project Path="DandyRabbitMQ.Producer/DandyRabbitMQ.Producer.csproj" />
+  <Project Path="DandyRabbitMQ.Serialization.NewtonsoftJson\DandyRabbitMQ.Serialization.NewtonsoftJson.csproj" />
   <Project Path="DandyRabbitMQ.Serialization/DandyRabbitMQ.Serialization.csproj" />
 </Solution>
