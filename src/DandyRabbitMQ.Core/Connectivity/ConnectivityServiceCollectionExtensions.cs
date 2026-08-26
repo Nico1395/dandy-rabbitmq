@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DandyRabbitMQ.Connectivity;
+namespace DandyRabbitMQ.Core.Connectivity;
 
 public static class ConnectivityServiceCollectionExtensions
 {

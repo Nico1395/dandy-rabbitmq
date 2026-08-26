@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace DandyRabbitMQ.Connectivity;
+namespace DandyRabbitMQ.Core.Connectivity;
 
 /// <summary>
 /// Provides the connection to the RabbitMQ broker or cluster.

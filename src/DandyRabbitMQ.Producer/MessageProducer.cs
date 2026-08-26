@@ -1,5 +1,5 @@
 using System.Text;
-using DandyRabbitMQ.Connectivity;
+using DandyRabbitMQ.Core.Connectivity;
 using DandyRabbitMQ.Core.Messages.Types;
 using DandyRabbitMQ.Serialization;
 using RabbitMQ.Client;

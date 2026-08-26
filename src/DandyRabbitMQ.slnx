@@ -3,7 +3,6 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
-  <Project Path="DandyRabbitMQ.Connectivity\DandyRabbitMQ.Connectivity.csproj" />
   <Project Path="DandyRabbitMQ.Consumer/DandyRabbitMQ.Consumer.csproj" />
   <Project Path="DandyRabbitMQ.Core/DandyRabbitMQ.Core.csproj" />
   <Project Path="DandyRabbitMQ.Producer/DandyRabbitMQ.Producer.csproj" />

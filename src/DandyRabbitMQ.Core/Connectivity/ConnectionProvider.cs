@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace DandyRabbitMQ.Connectivity;
+namespace DandyRabbitMQ.Core.Connectivity;
 
 internal sealed class ConnectionProvider(
     IServiceProvider serviceProvider,

@@ -1,4 +1,4 @@
-using DandyRabbitMQ.Connectivity;
+using DandyRabbitMQ.Core.Connectivity;
 using DandyRabbitMQ.Serialization;
 
 namespace DandyRabbitMQ.Producer;
