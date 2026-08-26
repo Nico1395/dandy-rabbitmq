@@ -3,11 +3,11 @@ using RabbitMQ.Client;
 namespace DandyRabbitMQ.Connectivity;
 
 /// <summary>
-/// Builder for <see cref="RabbitMQConnectionConfiguration"/>.
+/// Builder for <see cref="ConnectivityConfiguration"/>.
 /// </summary>
-public sealed class RabbitMQConnectionConfigurationBuilder
+public sealed class ConnectivityConfigurationBuilder
 {
-    private readonly RabbitMQConnectionConfiguration _configuration = new();
+    private readonly ConnectivityConfiguration _configuration = new();
 
     /// <summary>
     /// Facade to configure a connection to a cluster of multiple RabbitMQ <paramref name="nodes"/> using <paramref name="userName"/>
@@ -24,7 +24,7 @@ public sealed class RabbitMQConnectionConfigurationBuilder
     /// <param name="recoveryInterval">Amount of time the client will wait for before re-trying to recover connection.</param>
     /// <param name="nodes"><see cref="Uri"/>s of the nodes.</param>
     /// <returns>The builder.</returns>
-    public RabbitMQConnectionConfigurationBuilder ConnectToCluster(string userName, string password, IEnumerable<Uri> nodes, TimeSpan? recoveryInterval)
+    public ConnectivityConfigurationBuilder ConnectToCluster(string userName, string password, IEnumerable<Uri> nodes, TimeSpan? recoveryInterval)
     {
         _configuration.ConnectionFactoryInternal.UserName = userName;
         _configuration.ConnectionFactoryInternal.Password = password;
@@ -41,7 +41,7 @@ public sealed class RabbitMQConnectionConfigurationBuilder
     /// </summary>
     /// <param name="factory">Action for configuring the <see cref="ConnectionFactory"/>.</param>
     /// <returns>The builder.</returns>
-    public RabbitMQConnectionConfigurationBuilder ConnectionFactory(Action<ConnectionFactory> factory)
+    public ConnectivityConfigurationBuilder ConnectionFactory(Action<ConnectionFactory> factory)
     {
         factory(_configuration.ConnectionFactoryInternal);
         return this;
@@ -52,7 +52,7 @@ public sealed class RabbitMQConnectionConfigurationBuilder
     /// </summary>
     /// <param name="factory">The <see cref="ConnectionFactory"/>.</param>
     /// <returns>The builder.</returns>
-    public RabbitMQConnectionConfigurationBuilder SetConnectionFactory(ConnectionFactory factory)
+    public ConnectivityConfigurationBuilder SetConnectionFactory(ConnectionFactory factory)
     {
         _configuration.ConnectionFactoryInternal = factory;
         return this;
@@ -63,11 +63,11 @@ public sealed class RabbitMQConnectionConfigurationBuilder
     /// </summary>
     /// <param name="action">The actions.</param>
     /// <returns>The builder.</returns>
-    public RabbitMQConnectionConfigurationBuilder OnConnectionException(Action<IServiceProvider, Exception> action)
+    public ConnectivityConfigurationBuilder OnConnectionException(Action<IServiceProvider, Exception> action)
     {
         _configuration.OnConnectionException = action;
         return this;
     }
 
-    internal RabbitMQConnectionConfiguration Build() => _configuration;
+    internal ConnectivityConfiguration Build() => _configuration;
 }

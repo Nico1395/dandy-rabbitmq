@@ -4,7 +4,7 @@ namespace DandyRabbitMQ.Connectivity;
 
 internal sealed class ConnectionProvider(
     IServiceProvider serviceProvider,
-    RabbitMQConnectionConfiguration connectionConfiguration) : IConnectionProvider
+    ConnectivityConfiguration connectionConfiguration) : IConnectionProvider
 {
     private IConnection? _connection;
 

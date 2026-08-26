@@ -5,7 +5,7 @@ namespace DandyRabbitMQ.Connectivity;
 /// <summary>
 /// Configuration for the <see cref="IConnectionProvider"/>.
 /// </summary>
-public sealed class RabbitMQConnectionConfiguration
+public sealed class ConnectivityConfiguration
 {
     internal ConnectionFactory ConnectionFactoryInternal { get; set; } = new();
     internal List<AmqpTcpEndpoint> NodesInternal { get; set; } = [];
@@ -20,7 +20,7 @@ public sealed class RabbitMQConnectionConfiguration
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Only contains endpoints that are added via <see cref="RabbitMQConnectionConfigurationBuilder.ConnectToCluster"/>.
+    ///         Only contains endpoints that are added via <see cref="ConnectivityConfigurationBuilder.ConnectToCluster"/>.
     ///     </para>
     /// </remarks>
     public IReadOnlyList<AmqpTcpEndpoint> Nodes => NodesInternal;
