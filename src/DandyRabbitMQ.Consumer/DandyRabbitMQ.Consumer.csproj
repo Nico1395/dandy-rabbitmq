@@ -2,6 +2,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DandyRabbitMQ.Connectivity\DandyRabbitMQ.Connectivity.csproj" />
+      <ProjectReference Include="..\DandyRabbitMQ.Core\DandyRabbitMQ.Core.csproj" />
+      <ProjectReference Include="..\DandyRabbitMQ.Serialization\DandyRabbitMQ.Serialization.csproj" />
     </ItemGroup>
 
 </Project>
