@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 
 namespace DandyRabbitMQ.Core.Messages.Types;
 
-public static class MessageTypeProvider
+public static class MessageTypeNameProvider
 {
     private static readonly ConcurrentDictionary<Type, string> _types = [];
 
