@@ -1,6 +1,6 @@
 namespace DandyRabbitMQ.Serialization.SystemTextJson;
 
-public static class SystemJsonTextSerializationConfigurationBuilderExtensions
+public static class SystemTextJsonSerializationConfigurationBuilderExtensions
 {
     public static SerializationConfigurationBuilder UseSystemTextJson(this SerializationConfigurationBuilder serializationConfigurationBuilder, Action<SystemTextJsonPayloadSerializerConfigurationBuilder> builderAction)
     {
