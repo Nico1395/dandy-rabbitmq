@@ -4,8 +4,4 @@
       <ProjectReference Include="..\DandyRabbitMQ.Serialization\DandyRabbitMQ.Serialization.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" />
-    </ItemGroup>
-
 </Project>
