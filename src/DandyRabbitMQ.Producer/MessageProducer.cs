@@ -49,7 +49,7 @@ internal sealed class MessageProducer(
     {
         return configuration.TypeNameFactory != null
             ? configuration.TypeNameFactory(message)
-            : MessageTypeNameProvider.Get(message.GetType());
+            : MessageTypeNameMap.GetName(message.GetType());
     }
     
     private async Task<IChannel> GetChannelAsync(CancellationToken cancellationToken)
