@@ -17,13 +17,12 @@ The following UML package diagram shows the dependency graph of all current pack
 ## Packages for producers
 Producer **will** need to reference only `DandyRabbitMQ.Consumer` and any of the serialization implementations, so either `DandyRabbitMQ.Serialization.SystemTextJson` or `DandyRabbitMQ.Serialization.NewtonsoftJson`.
 
-This way `DandyRabbitMQ.Core` and `DandyRabbitMQ.Serialization` are both automatically included. Also, the producer configuration layer allows to configure both serialization and connectivity, so there is no need to add either to your `IServiceCollection` manually, that is done behind the scenes.
+This way `DandyRabbitMQ.Core` and thus `DandyRabbitMQ.Serialization` are both automatically included. Also, the producer configuration layer allows to configure both serialization and connectivity, so there is no need to add either to your `IServiceCollection` manually, that is done behind the scenes.
 
 ### Setup
-
 ## Packages for consumers
 Producer **will** need to reference only `DandyRabbitMQ.Producer` and any of the serialization implementations, so either `DandyRabbitMQ.Serialization.SystemTextJson` or `DandyRabbitMQ.Serialization.NewtonsoftJson`.
 
-This way `DandyRabbitMQ.Core` and `DandyRabbitMQ.Serialization` are both automatically included. Also, the producer configuration layer allows to configure both serialization and connectivity, so there is no need to add either to your `IServiceCollection` manually, that is done behind the scenes.
+This way `DandyRabbitMQ.Core` and thus `DandyRabbitMQ.Serialization` are both automatically included. Also, the producer configuration layer allows to configure both serialization and connectivity, so there is no need to add either to your `IServiceCollection` manually, that is done behind the scenes.
 
 ### Setup

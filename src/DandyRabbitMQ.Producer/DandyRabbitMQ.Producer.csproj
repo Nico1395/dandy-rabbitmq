@@ -2,7 +2,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DandyRabbitMQ.Core\DandyRabbitMQ.Core.csproj" />
-      <ProjectReference Include="..\DandyRabbitMQ.Serialization\DandyRabbitMQ.Serialization.csproj" />
     </ItemGroup>
 
 </Project>
