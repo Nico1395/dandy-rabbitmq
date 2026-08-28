@@ -20,7 +20,6 @@ internal sealed class ConsumerWorker(
                 throw new InvalidOperationException("No queues are configured.");
 
             var connection = await connectionProvider.GetAsync(stoppingToken);
-
             foreach (var channelConfiguration in consumerConfiguration.Channels)
             {
                 var channel = await connection.CreateChannelAsync(channelConfiguration.Options, stoppingToken);
@@ -73,7 +72,7 @@ internal sealed class ConsumerWorker(
                 noWait: configuration.Queue.NoWait,
                 cancellationToken: cancellationToken);
         }
-        
+
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += (_, args) => serviceProvider
             .GetRequiredService<IReceiver>()

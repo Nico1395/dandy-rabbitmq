@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using DandyRabbitMQ.Consumer.Configuration;
@@ -15,20 +17,18 @@ public class Receiver(
     IConsumerPipeline consumerPipeline,
     IPayloadSerializer payloadSerializer) : IReceiver
 {
+    private static readonly ConcurrentDictionary<Type, MethodInfo> _executeAsync = [];
+
     public async Task ReceiveAsync(BasicDeliverEventArgs args, SemaphoreSlim ackLock, IChannel channel, ChannelConfiguration configuration, CancellationToken cancellationToken)
     {
         // Assume failure
-        var status = ConsumerStatus.Nack;
+        var result = ConsumerResult.Nack();
 
         try
         {
             var messageType = args.BasicProperties.Type != null ? MessageTypeNameMap.GetType(args.BasicProperties.Type) : null;
             if (messageType == null)
                 throw new InvalidOperationException("Failed to resolve message type.");
-
-            MethodInfo executeAsync = null!;
-            if (executeAsync == null)
-                throw new InvalidOperationException($"Failed to reflect method '{nameof(IConsumer<>.ConsumeAsync)}' from '{typeof(IConsumer<>).MakeGenericType(messageType)}'.");
 
             var json = Encoding.UTF8.GetString(args.Body.Span);
             if (messageType == null || string.IsNullOrWhiteSpace(json))
@@ -37,10 +37,11 @@ public class Receiver(
             var message = payloadSerializer.Deserialize(json, messageType);
             using var scope = serviceProvider.CreateScope();
             {
-                if (executeAsync.Invoke(consumerPipeline, parameters: [message, cancellationToken]) is not Task<ConsumerStatus> task)
+                var executeAsync = GetExecuteAsync(messageType);
+                if (executeAsync.Invoke(consumerPipeline, parameters: [message, cancellationToken]) is not Task<ConsumerResult> task)
                     throw new InvalidOperationException($"Failed to handle '{messageType}'.");
 
-                status = await task;
+                result = await task;
             }
         }
         catch (Exception ex)
@@ -48,24 +49,26 @@ public class Receiver(
             consumerConfiguration.OnExceptionWhenReceivingMessage?.Invoke(serviceProvider, ex);
         }
 
-        // Using a lock so the channel can be used safely in multiple threads
-        // Intentionally avoiding the cancellation token, because when stopping the ack or nack should still go through to avoid message noise in the queue.
+        // Using a lock so the channel can be used safely in multiple threads. Intentionally avoiding the cancellation token,
+        // because when stopping the ack or nack should still go through to avoid message noise in the queue.
         await ackLock.WaitAsync(cancellationToken: CancellationToken.None);
 
         try
         {
             // Evaluate and act accordingly
-            if (status == ConsumerStatus.Ack)
+            if (result.Status == ConsumerStatus.Ack)
             {
-                await channel.BasicAckAsync(args.DeliveryTag, multiple: false, cancellationToken);
+                await channel.BasicAckAsync(
+                    args.DeliveryTag,
+                    multiple: result.Multiple,
+                    cancellationToken);
             }
             else
             {
-                // TODO -> Allow configuration of requeue and multiple
                 await channel.BasicNackAsync(
                     args.DeliveryTag,
-                    multiple: false,
-                    requeue: false,
+                    multiple: result.Multiple,
+                    requeue: result.Requeue,
                     cancellationToken);
             }
         }
@@ -73,5 +76,17 @@ public class Receiver(
         {
             ackLock.Release();
         }
+    }
+
+    private static MethodInfo GetExecuteAsync(Type messageType)
+    {
+        return _executeAsync.GetOrAdd(messageType, type =>
+        {
+            var executeAsync = typeof(IConsumerPipeline).GetMethod(nameof(IConsumerPipeline.ExecuteAsync))?.MakeGenericMethod(type);
+            if (executeAsync == null)
+                throw new UnreachableException($"Failed to reflect method '{nameof(IConsumerPipeline.ExecuteAsync)}' from '{nameof(IConsumerPipeline)}'.");
+
+            return executeAsync;
+        });
     }
 }

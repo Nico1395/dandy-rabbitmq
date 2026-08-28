@@ -3,5 +3,5 @@ namespace DandyRabbitMQ.Consumer;
 public interface IConsumer<in TMessage>
     where TMessage : class
 {
-    Task<ConsumerStatus> ConsumeAsync(TMessage message, CancellationToken cancellationToken);
+    Task<ConsumerResult> ConsumeAsync(TMessage message, CancellationToken cancellationToken);
 }

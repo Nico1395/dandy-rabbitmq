@@ -1,3 +1,3 @@
 namespace DandyRabbitMQ.Consumer;
 
-public delegate Task<ConsumerStatus> ConsumerDelegate();
+public delegate Task<ConsumerResult> ConsumerDelegate();
