@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DandyRabbitMQ.Consumer.Internal;
+namespace DandyRabbitMQ.Consumer.Worker;
 
 public class ConsumerPipeline(IServiceProvider serviceProvider) : IConsumerPipeline
 {

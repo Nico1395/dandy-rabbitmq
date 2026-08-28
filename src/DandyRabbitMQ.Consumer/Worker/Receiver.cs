@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace DandyRabbitMQ.Consumer.Internal;
+namespace DandyRabbitMQ.Consumer.Worker;
 
 public class Receiver(
     ConsumerConfiguration consumerConfiguration,

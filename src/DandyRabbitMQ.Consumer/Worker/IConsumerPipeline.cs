@@ -1,4 +1,4 @@
-namespace DandyRabbitMQ.Consumer.Internal;
+namespace DandyRabbitMQ.Consumer.Worker;
 
 public interface IConsumerPipeline
 {

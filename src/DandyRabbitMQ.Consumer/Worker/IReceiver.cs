@@ -2,7 +2,7 @@ using DandyRabbitMQ.Consumer.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace DandyRabbitMQ.Consumer.Internal;
+namespace DandyRabbitMQ.Consumer.Worker;
 
 public interface IReceiver
 {

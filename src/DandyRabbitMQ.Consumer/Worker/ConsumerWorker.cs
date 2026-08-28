@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace DandyRabbitMQ.Consumer.Internal;
+namespace DandyRabbitMQ.Consumer.Worker;
 
 internal sealed class ConsumerWorker(
     ConsumerConfiguration consumerConfiguration,

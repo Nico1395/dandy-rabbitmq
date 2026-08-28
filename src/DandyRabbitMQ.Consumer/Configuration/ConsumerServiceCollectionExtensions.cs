@@ -1,5 +1,5 @@
 using System.Reflection;
-using DandyRabbitMQ.Consumer.Internal;
+using DandyRabbitMQ.Consumer.Worker;
 using DandyRabbitMQ.Core.Connectivity;
 using DandyRabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
