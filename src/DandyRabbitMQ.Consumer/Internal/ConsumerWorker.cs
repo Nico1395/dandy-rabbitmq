@@ -29,7 +29,7 @@ internal sealed class ConsumerWorker(
         }
         catch (Exception ex)
         {
-            // TODO -> Log
+            consumerConfiguration.OnExceptionWhenInitializingWorker?.Invoke(serviceProvider, ex);
             throw;
         }
     }

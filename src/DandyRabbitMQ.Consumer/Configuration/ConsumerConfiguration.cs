@@ -10,6 +10,9 @@ public sealed class ConsumerConfiguration
     public Assembly[]? Assemblies { get; internal set; }
     public ChannelConfiguration[]? Channels { get; internal set; }
 
+    public Action<IServiceProvider, Exception>? OnExceptionWhenInitializingWorker { get; internal set; }
+    public Action<IServiceProvider, Exception>? OnExceptionWhenReceivingMessage { get; internal set; }
+
     public Action<SerializationConfigurationBuilder>? SerializationConfigurationBuilderAction { get; internal set; }
     public Action<ConnectivityConfigurationBuilder>? ConnectivityConfigurationBuilderAction { get; internal set; }
 }

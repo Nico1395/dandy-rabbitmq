@@ -32,6 +32,18 @@ public sealed class ConsumerConfigurationBuilder
         return this;
     }
 
+    public ConsumerConfigurationBuilder OnExceptionWhenInitializingWorker(Action<IServiceProvider, Exception> handler)
+    {
+        _configuration.OnExceptionWhenInitializingWorker = handler;
+        return this;
+    }
+
+    public ConsumerConfigurationBuilder OnExceptionWhenReceivingMessage(Action<IServiceProvider, Exception> handler)
+    {
+        _configuration.OnExceptionWhenReceivingMessage = handler;
+        return this;
+    }
+
     public Action<SerializationConfigurationBuilder>? Serialization { get; set; }
     public Action<ConnectivityConfigurationBuilder>? Connectivity { get; set; }
 

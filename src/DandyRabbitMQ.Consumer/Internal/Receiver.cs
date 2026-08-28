@@ -10,6 +10,7 @@ using RabbitMQ.Client.Events;
 namespace DandyRabbitMQ.Consumer.Internal;
 
 public class Receiver(
+    ConsumerConfiguration consumerConfiguration,
     IServiceProvider serviceProvider,
     IConsumerPipeline consumerPipeline,
     IPayloadSerializer payloadSerializer) : IReceiver
@@ -44,7 +45,7 @@ public class Receiver(
         }
         catch (Exception ex)
         {
-            // TODO -> Log
+            consumerConfiguration.OnExceptionWhenReceivingMessage?.Invoke(serviceProvider, ex);
         }
 
         // Using a lock so the channel can be used safely in multiple threads
