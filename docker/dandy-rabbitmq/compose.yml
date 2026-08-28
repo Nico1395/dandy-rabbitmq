@@ -1,0 +1,46 @@
+version: '3.8'
+
+volumes:
+  rmq-1-lib:
+  rmq-1-log:
+  rmq-2-lib:
+  rmq-2-log:
+
+networks:
+  dandy-rabbitmq:
+    driver: bridge
+
+services:
+  rabbitmq-1:
+    image: rabbitmq:management
+    container_name: rabbitmq-1
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=dev
+      - RABBITMQ_DEFAULT_PASS=dev
+      - RABBITMQ_ERLANG_COOKIE="super_secret_cookie"
+      - RABBITMQ_NODENAME=dandy-rabbitmq@rabbitmq-1
+    volumes:
+      - rmq-1-lib:/var/lib/rabbitmq/
+      - rmq-1-log:/var/log/rabbitmq/
+    networks:
+      - dandy-rabbitmq
+
+  rabbitmq-2:
+    image: rabbitmq:management
+    container_name: rabbitmq-2
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=dev
+      - RABBITMQ_DEFAULT_PASS=dev
+      - RABBITMQ_ERLANG_COOKIE="super_secret_cookie"
+      - RABBITMQ_NODENAME=dandy-rabbitmq@rabbitmq-2
+    volumes:
+      - rmq-2-lib:/var/lib/rabbitmq/
+      - rmq-2-log:/var/log/rabbitmq/
+    networks:
+      - dandy-rabbitmq
