@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using DandyRabbitMQ.Consumer.Configuration;
+using DandyRabbitMQ.Consumer.Interceptors;
 using DandyRabbitMQ.Core.Messages.Types;
 using DandyRabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ public class Receiver(
     {
         // Assume failure
         var result = ConsumerResult.Nack();
+        object? message = null;
 
         try
         {
@@ -34,7 +36,7 @@ public class Receiver(
             if (messageType == null || string.IsNullOrWhiteSpace(json))
                 throw new InvalidOperationException("Failed to deserialize message.");
 
-            var message = payloadSerializer.Deserialize(json, messageType);
+            message = payloadSerializer.Deserialize(json, messageType);
             using var scope = serviceProvider.CreateScope();
             {
                 var executeAsync = GetExecuteAsync(messageType);
@@ -49,12 +51,30 @@ public class Receiver(
             consumerConfiguration.OnExceptionWhenReceivingMessage?.Invoke(serviceProvider, ex);
         }
 
-        // Using a lock so the channel can be used safely in multiple threads. Intentionally avoiding the cancellation token,
-        // because when stopping the ack or nack should still go through to avoid message noise in the queue.
-        await ackLock.WaitAsync(cancellationToken: CancellationToken.None);
+        await AckOrNackAsync(args, ackLock, channel, result, cancellationToken);
+        await InterceptAckOrNackAsync(args, message, result, cancellationToken);
+    }
 
+    private static MethodInfo GetExecuteAsync(Type messageType)
+    {
+        return _executeAsync.GetOrAdd(messageType, type =>
+        {
+            var executeAsync = typeof(IConsumerPipeline).GetMethod(nameof(IConsumerPipeline.ExecuteAsync))?.MakeGenericMethod(type);
+            if (executeAsync == null)
+                throw new UnreachableException($"Failed to reflect method '{nameof(IConsumerPipeline.ExecuteAsync)}' from '{nameof(IConsumerPipeline)}'.");
+
+            return executeAsync;
+        });
+    }
+
+    private async Task AckOrNackAsync(BasicDeliverEventArgs args, SemaphoreSlim ackLock, IChannel channel, ConsumerResult result, CancellationToken cancellationToken)
+    {
         try
         {
+            // Using a lock so the channel can be used safely in multiple threads. Intentionally avoiding the cancellation token,
+            // because when stopping the ack or nack should still go through to avoid message noise in the queue.
+            await ackLock.WaitAsync(cancellationToken: CancellationToken.None);
+
             // Evaluate and act accordingly
             if (result.Status == ConsumerStatus.Ack)
             {
@@ -72,21 +92,35 @@ public class Receiver(
                     cancellationToken);
             }
         }
+        catch (Exception ex)
+        {
+            consumerConfiguration.OnExceptionWhenAckOrNack?.Invoke(serviceProvider, ex);
+        }
         finally
         {
             ackLock.Release();
         }
     }
 
-    private static MethodInfo GetExecuteAsync(Type messageType)
+    private async Task InterceptAckOrNackAsync(BasicDeliverEventArgs args, object? message, ConsumerResult result, CancellationToken cancellationToken)
     {
-        return _executeAsync.GetOrAdd(messageType, type =>
-        {
-            var executeAsync = typeof(IConsumerPipeline).GetMethod(nameof(IConsumerPipeline.ExecuteAsync))?.MakeGenericMethod(type);
-            if (executeAsync == null)
-                throw new UnreachableException($"Failed to reflect method '{nameof(IConsumerPipeline.ExecuteAsync)}' from '{nameof(IConsumerPipeline)}'.");
+        if (message == null)
+            return;
 
-            return executeAsync;
-        });
+        try
+        {
+            var interceptor = serviceProvider.GetService<IConsumerInterceptor>();
+            if (interceptor == null)
+                return;
+
+            if (result.Status == ConsumerStatus.Ack)
+                await interceptor.OnAfterAckAsync(args, message, result, cancellationToken);
+            else
+                await interceptor.OnAfterNackAsync(args, message, result, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            consumerConfiguration.OnExceptionWhenIntercepting?.Invoke(serviceProvider, ex);
+        }
     }
 }
