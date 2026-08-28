@@ -24,6 +24,7 @@ public static class ConsumerServiceCollectionExtensions
         services.AddSingleton(configuration);
         services.AddHostedService<ConsumerWorker>();
         services.AddSingleton<IConsumerPipeline, ConsumerPipeline>();
+        services.AddSingleton<IReceiver, Receiver>();
 
         if (configuration.Assemblies != null)
             AddServicesFromAssemblies(services, configuration.Assemblies);
