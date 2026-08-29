@@ -1,5 +1,6 @@
 using System.Reflection;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 
 namespace DandyRabbitMQ.Consumer.Configuration;
@@ -18,4 +19,5 @@ public sealed class ConsumerConfiguration
 
     public SerializationConfigurationBuilder SerializationConfigurationBuilder { get; set; } = new();
     public ConnectivityConfigurationBuilder ConnectivityConfigurationBuilder { get; set; } = new();
+    public MessagesConfigurationBuilder MessagesConfigurationBuilder { get; internal set; } = new();
 }

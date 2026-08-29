@@ -8,16 +8,19 @@ public static class MessageServiceCollectionExtensions
 {
     public static IServiceCollection AddDandyRabbitMQMessages(this IServiceCollection services, Action<MessagesConfigurationBuilder> builderAction)
     {
-        var configuration = services.BuildServiceProvider().GetService<MessagesConfiguration>();
-        var builder = new MessagesConfigurationBuilder(configuration);
+        var builder = new MessagesConfigurationBuilder();
         builderAction.Invoke(builder);
-        configuration = builder.Build();
+        var configuration = builder.Build();
 
         return services.AddDandyRabbitMQMessages(configuration);
     }
 
     public static IServiceCollection AddDandyRabbitMQMessages(this IServiceCollection services, MessagesConfiguration configuration)
     {
+        var previous = services.BuildServiceProvider().GetService<MessagesConfiguration>();
+        if (previous != null)
+            configuration = MessagesConfiguration.Merge(previous, configuration);
+
         services.AddSingleton(configuration);
         ScanForMessages(configuration);
 
