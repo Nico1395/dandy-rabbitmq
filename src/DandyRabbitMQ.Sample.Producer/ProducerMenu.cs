@@ -88,7 +88,7 @@ internal sealed class ProducerMenu(IMessageProducer messageProducer) : Backgroun
 
             try
             {
-                var message = new InputMessage
+                var message = new InputMessageV1
                 {
                     Text = input,
                 };

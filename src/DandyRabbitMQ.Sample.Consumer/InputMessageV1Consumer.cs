@@ -3,9 +3,9 @@ using DandyRabbitMQ.Sample.Shared;
 
 namespace DandyRabbitMQ.Sample.Consumer;
 
-internal sealed class MessageConsumer : IConsumer<InputMessage>
+internal sealed class InputMessageV1Consumer : IConsumer<InputMessageV1>
 {
-    public Task<ConsumerResult> ConsumeAsync(InputMessage message, CancellationToken cancellationToken)
+    public Task<ConsumerResult> ConsumeAsync(InputMessageV1 message, CancellationToken cancellationToken)
     {
         Console.WriteLine($"Message received: {message.Text}");
         return Task.FromResult(ConsumerResult.Ack());
