@@ -4,5 +4,5 @@ namespace DandyRabbitMQ.Serialization.NewtonsoftJson;
 
 public sealed class NewtonsoftJsonPayloadSerializerConfiguration
 {
-    public JsonSerializerSettings JsonSerializerSettings { get; set; } = new();
+    public JsonSerializerSettings JsonSerializerSettings { get; set; } = JsonSerializerSettingsPresets.SharedMessageTypes();
 }

@@ -1,0 +1,47 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
+
+namespace DandyRabbitMQ.Serialization.SystemTextJson;
+
+public static class JsonSerializerOptionsPresets
+{
+    public static JsonSerializerOptions Default()
+    {
+        return new JsonSerializerOptions();
+    }
+
+    public static JsonSerializerOptions DistinctMessageTypes()
+    {
+        return new JsonSerializerOptions();
+    }
+
+    public static JsonSerializerOptions SharedMessageTypes()
+    {
+        return new JsonSerializerOptions
+        {
+            TypeInfoResolver = CreateSharedMessageTypesTypeInfoResolver(),
+        };
+    }
+
+    public static IJsonTypeInfoResolver CreateSharedMessageTypesTypeInfoResolver()
+    {
+        return new DefaultJsonTypeInfoResolver
+        {
+            Modifiers =
+            {
+                static typeInfo =>
+                {
+                    if (typeInfo.Kind == JsonTypeInfoKind.Object)
+                    {
+                        typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
+                        {
+                            TypeDiscriminatorPropertyName = "$type",
+                            UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType
+                        };
+                    }
+                }
+            }
+        };
+    }
+}
