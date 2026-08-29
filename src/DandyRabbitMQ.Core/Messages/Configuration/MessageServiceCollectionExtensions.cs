@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,11 @@ public static class MessageServiceCollectionExtensions
         builderAction.Invoke(builder);
         configuration = builder.Build();
 
+        return services.AddDandyRabbitMQMessages(configuration);
+    }
+
+    public static IServiceCollection AddDandyRabbitMQMessages(this IServiceCollection services, MessagesConfiguration configuration)
+    {
         services.AddSingleton(configuration);
         ScanForMessages(configuration);
 
@@ -35,16 +41,24 @@ public static class MessageServiceCollectionExtensions
 
         foreach (var messageType in messageTypes)
         {
-            var messageConfiguration = configuration.Messages.GetOrAdd(messageType, type => new() { Type = type, });
+            var metadata = new ConcurrentDictionary<string, object>();
+            var messageConfiguration = configuration.Messages.GetOrAdd(messageType, type => new()
+            {
+                RuntimeType = type,
+                Metadata = metadata,
+            });
+
             var attributes = messageType.GetCustomAttributes<MessageAttribute>().ToArray();
             foreach (var attribute in attributes)
             {
-                if (attribute is ExchangeAttribute exchangeAttribute)
+                if (attribute is MessageExchangeAttribute exchangeAttribute)
                     messageConfiguration.Exchange = exchangeAttribute.Exchange;
-                else if (attribute is RoutingKeyAttribute routingKeyAttribute)
+                else if (attribute is MessageRoutesAttribute routingKeyAttribute)
                     messageConfiguration.RoutingKeys = routingKeyAttribute.Keys;
-                else if (attribute is DistinctMessageAttribute distinctMessageAttribute)
-                    messageConfiguration.RouteExclusiveSerialization = true;
+                else if (attribute is MessageMetadataAttribute metadataAttribute)
+                    metadata[metadataAttribute.Key] = metadataAttribute.Value;
+                else if (attribute is MessageTypeAttribute typeAttribute)
+                    messageConfiguration.Type = typeAttribute.Type;
                 else
                     throw new InvalidOperationException($"Unknown attribute type: {attribute.GetType()}");
             }

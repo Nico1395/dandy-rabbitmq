@@ -1,11 +1,27 @@
+using System.Collections.Concurrent;
+
 namespace DandyRabbitMQ.Core.Messages.Configuration;
 
-public sealed class MessageConfigurationBuilder(Type messageType)
+public sealed class MessageConfigurationBuilder
 {
-    private readonly MessageConfiguration _message = new()
+    private readonly ConcurrentDictionary<string, object> _metadata;
+    private readonly MessageConfiguration _message;
+
+    public MessageConfigurationBuilder(Type messageType)
     {
-        Type = messageType,
-    };
+        _metadata = [];
+        _message = new MessageConfiguration
+        {
+            RuntimeType = messageType,
+            Metadata = _metadata,
+        };
+    }
+
+    public MessageConfigurationBuilder SetType(string type)
+    {
+        _message.Type = type;
+        return this;
+    }
 
     public MessageConfigurationBuilder SetExchange(string exchange)
     {
@@ -19,9 +35,9 @@ public sealed class MessageConfigurationBuilder(Type messageType)
         return this;
     }
 
-    public MessageConfigurationBuilder IsDistinctMessageType()
+    public MessageConfigurationBuilder AddMetadata(string key, object value)
     {
-        _message.RouteExclusiveSerialization = true;
+        _metadata[key] = value;
         return this;
     }
 

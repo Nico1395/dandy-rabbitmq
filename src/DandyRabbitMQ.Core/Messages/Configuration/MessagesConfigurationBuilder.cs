@@ -27,7 +27,7 @@ public sealed class MessagesConfigurationBuilder
         builderAction.Invoke(builder);
 
         var message = builder.Build();
-        _messages[message.Type] = message;
+        _messages[message.RuntimeType] = message;
 
         return this;
     }
@@ -37,7 +37,7 @@ public sealed class MessagesConfigurationBuilder
         _assemblies = assemblies;
         return this;
     }
-    
+
     public MessagesConfiguration Build()
     {
         return new MessagesConfiguration
