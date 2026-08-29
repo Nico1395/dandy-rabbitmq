@@ -29,11 +29,8 @@ public static class ConsumerServiceCollectionExtensions
         if (configuration.Assemblies != null)
             AddServicesFromAssemblies(services, configuration.Assemblies);
 
-        if (configuration.ConnectivityConfigurationBuilderAction != null)
-            services.AddDandyRabbitMQConnectivity(configuration.ConnectivityConfigurationBuilderAction);
-
-        if (configuration.SerializationConfigurationBuilderAction != null)
-            services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilderAction);
+        services.AddDandyRabbitMQConnectivity(configuration.ConnectivityConfigurationBuilder.Build());
+        services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilder.Build());
 
         return services;
     }

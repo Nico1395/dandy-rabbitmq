@@ -7,6 +7,6 @@ public sealed class ProducerConfiguration
 {
     public Func<object, string>? TypeNameFactory { get; internal set; }
 
-    public Action<SerializationConfigurationBuilder>? SerializationConfigurationBuilderAction { get; internal set; }
-    public Action<ConnectivityConfigurationBuilder>? ConnectivityConfigurationBuilderAction { get; internal set; }
+    public SerializationConfigurationBuilder SerializationConfigurationBuilder { get; internal set; } = new();
+    public ConnectivityConfigurationBuilder ConnectivityConfigurationBuilder { get; internal set; } = new();
 }

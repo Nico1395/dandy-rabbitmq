@@ -62,13 +62,13 @@ public sealed class ConsumerConfigurationBuilder
         return this;
     }
 
-    public Action<SerializationConfigurationBuilder>? Serialization { get; set; }
-    public Action<ConnectivityConfigurationBuilder>? Connectivity { get; set; }
+    public SerializationConfigurationBuilder Serialization { get; set; } = new();
+    public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
 
     internal ConsumerConfiguration Build()
     {
-        _configuration.SerializationConfigurationBuilderAction = Serialization;
-        _configuration.ConnectivityConfigurationBuilderAction = Connectivity;
+        _configuration.SerializationConfigurationBuilder = Serialization;
+        _configuration.ConnectivityConfigurationBuilder = Connectivity;
 
         return _configuration;
     }

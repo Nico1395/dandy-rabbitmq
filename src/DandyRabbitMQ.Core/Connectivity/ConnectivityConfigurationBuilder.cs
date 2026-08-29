@@ -69,5 +69,5 @@ public sealed class ConnectivityConfigurationBuilder
         return this;
     }
 
-    internal ConnectivityConfiguration Build() => _configuration;
+    public ConnectivityConfiguration Build() => _configuration;
 }

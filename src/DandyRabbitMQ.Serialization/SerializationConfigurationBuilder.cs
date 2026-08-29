@@ -11,6 +11,6 @@ public sealed class SerializationConfigurationBuilder
 
         return this;
     }
-    
-    internal SerializationConfiguration Build() => _configuration;
+
+    public SerializationConfiguration Build() => _configuration;
 }

@@ -15,11 +15,8 @@ public static class ProducerServiceCollectionExtensions
         services.AddSingleton(configuration);
         services.AddScoped<IMessageProducer, MessageProducer>();
 
-        if (configuration.ConnectivityConfigurationBuilderAction != null)
-            services.AddDandyRabbitMQConnectivity(configuration.ConnectivityConfigurationBuilderAction);
-
-        if (configuration.SerializationConfigurationBuilderAction != null)
-            services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilderAction);
+        services.AddDandyRabbitMQConnectivity(configuration.ConnectivityConfigurationBuilder.Build());
+        services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilder.Build());
 
         return services;
     }

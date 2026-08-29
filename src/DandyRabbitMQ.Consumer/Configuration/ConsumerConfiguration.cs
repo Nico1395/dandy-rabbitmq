@@ -16,6 +16,6 @@ public sealed class ConsumerConfiguration
     public Action<IServiceProvider, Exception>? OnExceptionWhenAckOrNack { get; internal set; }
     public Action<IServiceProvider, Exception>? OnExceptionWhenIntercepting { get; internal set; }
 
-    public Action<SerializationConfigurationBuilder>? SerializationConfigurationBuilderAction { get; internal set; }
-    public Action<ConnectivityConfigurationBuilder>? ConnectivityConfigurationBuilderAction { get; internal set; }
+    public SerializationConfigurationBuilder SerializationConfigurationBuilder { get; set; } = new();
+    public ConnectivityConfigurationBuilder ConnectivityConfigurationBuilder { get; set; } = new();
 }
