@@ -11,12 +11,7 @@ public static class JsonSerializerOptionsPresets
         return new JsonSerializerOptions();
     }
 
-    public static JsonSerializerOptions DistinctMessageTypes()
-    {
-        return new JsonSerializerOptions();
-    }
-
-    public static JsonSerializerOptions SharedMessageTypes()
+    public static JsonSerializerOptions WithTypeInfoResolver()
     {
         return new JsonSerializerOptions
         {
@@ -37,7 +32,7 @@ public static class JsonSerializerOptionsPresets
                         typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                         {
                             TypeDiscriminatorPropertyName = "$type",
-                            UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType
+                            UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType,
                         };
                     }
                 }

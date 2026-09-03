@@ -4,5 +4,5 @@ namespace DandyRabbitMQ.Serialization.SystemTextJson;
 
 public sealed class SystemTextJsonPayloadSerializerConfiguration
 {
-    public JsonSerializerOptions JsonSerializerOptions { get; set; } = JsonSerializerOptionsPresets.SharedMessageTypes();
+    public JsonSerializerOptions JsonSerializerOptions { get; set; } = JsonSerializerOptionsPresets.Default();
 }

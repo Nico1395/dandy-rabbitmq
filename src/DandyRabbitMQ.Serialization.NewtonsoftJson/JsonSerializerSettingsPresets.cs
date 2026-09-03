@@ -9,12 +9,7 @@ public static class JsonSerializerSettingsPresets
         return new JsonSerializerSettings();
     }
 
-    public static JsonSerializerSettings DistinctMessageTypes()
-    {
-        return new JsonSerializerSettings();
-    }
-
-    public static JsonSerializerSettings SharedMessageTypes()
+    public static JsonSerializerSettings WithTypeNameHandling()
     {
         return new JsonSerializerSettings
         {
