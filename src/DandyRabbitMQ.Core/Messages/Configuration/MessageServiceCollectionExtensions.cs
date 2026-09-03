@@ -21,8 +21,8 @@ public static class MessageServiceCollectionExtensions
         if (previous != null)
             configuration = MessagesConfiguration.Merge(previous, configuration);
 
-        services.AddSingleton(configuration);
         ScanForMessages(configuration);
+        services.AddSingleton(configuration);
 
         return services;
     }
@@ -44,11 +44,15 @@ public static class MessageServiceCollectionExtensions
 
         foreach (var messageType in messageTypes)
         {
+            // In this loop we are obviously evaluating attributes. However, something to note is that we are first getting
+            // or adding message configurations associated with the runtime type, since that is easy to do here. At the end,
+            // when the key might be overridden by an attribute, we can then add the message configuration to the by-key cache.
+
             var metadata = new ConcurrentDictionary<string, object>();
-            var messageConfiguration = configuration.MessagesByRuntimeType.GetOrAdd(messageType, t => new()
+            var messageConfiguration = configuration.MessagesByRuntimeType.GetOrAdd(messageType, type => new MessageConfiguration
             {
-                RuntimeType = t,
-                Key = t.Name,
+                RuntimeType = type,
+                Key = type.Name,
                 Metadata = metadata,
             });
 
@@ -66,6 +70,13 @@ public static class MessageServiceCollectionExtensions
                 else
                     throw new InvalidOperationException($"Unknown attribute type: {attribute.GetType()}");
             }
+
+            configuration.MessagesByKey[messageConfiguration.Key] = messageConfiguration;
+
+            // If the message type name is different from the runtime type name, then we need to remove the old keyed
+            // message configuration to prevent obsolete cache entries.
+            if (messageConfiguration.Key != messageConfiguration.RuntimeType.Name)
+                configuration.MessagesByKey.Remove(messageConfiguration.RuntimeType.Name, out _);
         }
     }
 }
