@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using DandyRabbitMQ.Consumer.Configuration;
 using DandyRabbitMQ.Consumer.Interceptors;
-using DandyRabbitMQ.Core.Messages.Types;
+using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -14,6 +14,7 @@ namespace DandyRabbitMQ.Consumer.Worker;
 
 public class Receiver(
     ConsumerConfiguration consumerConfiguration,
+    MessagesConfiguration messagesConfiguration,
     IServiceProvider serviceProvider,
     IConsumerPipeline consumerPipeline,
     IPayloadSerializer payloadSerializer) : IReceiver
@@ -28,20 +29,22 @@ public class Receiver(
 
         try
         {
-            var messageType = args.BasicProperties.Type != null ? MessageTypeNameMap.GetType(args.BasicProperties.Type) : null;
-            if (messageType == null)
+            if (string.IsNullOrWhiteSpace(args.BasicProperties.Type))
+                throw new InvalidOperationException("Message type is expected to be set.");
+
+            if (!messagesConfiguration.MessagesByKey.TryGetValue(args.BasicProperties.Type, out var messageConfiguration))
                 throw new InvalidOperationException("Failed to resolve message type.");
 
             var json = Encoding.UTF8.GetString(args.Body.Span);
-            if (messageType == null || string.IsNullOrWhiteSpace(json))
+            if (string.IsNullOrWhiteSpace(json))
                 throw new InvalidOperationException("Failed to deserialize message.");
 
-            message = payloadSerializer.Deserialize(json, messageType);
+            message = payloadSerializer.Deserialize(json, messageConfiguration.RuntimeType);
             using var scope = serviceProvider.CreateScope();
             {
-                var executeAsync = GetExecuteAsync(messageType);
+                var executeAsync = GetExecuteAsync(messageConfiguration.RuntimeType);
                 if (executeAsync.Invoke(consumerPipeline, parameters: [message, cancellationToken]) is not Task<ConsumerResult> task)
-                    throw new InvalidOperationException($"Failed to handle '{messageType}'.");
+                    throw new InvalidOperationException($"Failed to handle '{messageConfiguration.RuntimeType}'.");
 
                 result = await task;
             }
