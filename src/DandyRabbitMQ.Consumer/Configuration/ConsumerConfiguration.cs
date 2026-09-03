@@ -19,5 +19,5 @@ public sealed class ConsumerConfiguration
 
     public SerializationConfigurationBuilder SerializationConfigurationBuilder { get; set; } = new();
     public ConnectivityConfigurationBuilder ConnectivityConfigurationBuilder { get; set; } = new();
-    public MessagesConfigurationBuilder MessagesConfigurationBuilder { get; internal set; } = new();
+    public MessagesConfigurationBuilder MessagesConfigurationBuilder { get; set; } = new();
 }

@@ -9,6 +9,10 @@ public sealed class ConsumerConfigurationBuilder
 {
     private readonly ConsumerConfiguration _configuration = new();
 
+    public SerializationConfigurationBuilder Serialization { get; set; } = new();
+    public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
+    public MessagesConfigurationBuilder Messages { get; set; } = new();
+
     public ConsumerConfigurationBuilder UseTypeFactory(Func<string, Type> factory)
     {
         _configuration.TypeFactory = factory;
@@ -23,9 +27,7 @@ public sealed class ConsumerConfigurationBuilder
 
     public ConsumerConfigurationBuilder ScanInAssemblies(params Assembly[] assemblies)
     {
-        _configuration.Assemblies = assemblies;
-        Messages.ScanInAssemblies(assemblies);
-
+        Messages.ScanInAssemblies(_configuration.Assemblies = assemblies);
         return this;
     }
 
@@ -64,10 +66,6 @@ public sealed class ConsumerConfigurationBuilder
         _configuration.OnExceptionWhenIntercepting = handler;
         return this;
     }
-
-    public SerializationConfigurationBuilder Serialization { get; set; } = new();
-    public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
-    public MessagesConfigurationBuilder Messages { get; internal set; } = new();
 
     internal ConsumerConfiguration Build()
     {
