@@ -14,7 +14,7 @@ public static class ProducerServiceCollectionExtensions
         var configuration = builder.Build();
 
         services.AddSingleton(configuration);
-        services.AddScoped<IMessageProducer, MessageProducer>();
+        services.AddScoped<IProducer, Producer>();
 
         services.AddDandyRabbitMQConnectivity(configuration.ConnectivityConfigurationBuilder.Build());
         services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilder.Build());

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DandyRabbitMQ.Sample.Producer;
 
-internal sealed class ProducerMenu(IMessageProducer messageProducer) : BackgroundService
+internal sealed class ProducerMenu(IProducer producer) : BackgroundService
 {
     private string? _inputCommand;
 
@@ -93,7 +93,7 @@ internal sealed class ProducerMenu(IMessageProducer messageProducer) : Backgroun
                     Text = input,
                 };
 
-                var success = await messageProducer.ProduceAsync("messages", "all", message, cancellationToken);
+                var success = await producer.ProduceAsync("messages", "all", message, cancellationToken);
                 if (success)
                     break;
 

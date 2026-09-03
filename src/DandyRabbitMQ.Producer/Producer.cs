@@ -7,11 +7,11 @@ using RabbitMQ.Client;
 
 namespace DandyRabbitMQ.Producer;
 
-internal sealed class MessageProducer(
+internal sealed class Producer(
     IPayloadSerializer payloadSerializer,
     IConnectionProvider connectionProvider,
     MessagesConfiguration messagesConfiguration,
-    ProducerConfiguration producerConfiguration) : IMessageProducer
+    ProducerConfiguration producerConfiguration) : IProducer
 {
     private IChannel? _channel;
 
