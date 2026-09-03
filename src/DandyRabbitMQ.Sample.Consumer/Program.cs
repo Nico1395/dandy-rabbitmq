@@ -16,7 +16,7 @@ var settings = new HostApplicationBuilderSettings
 settings.Configuration.AddJsonFile("appsettings.json", optional: false);
 
 var builder = Host.CreateApplicationBuilder(settings);
-var assembly = Assembly.Load("DandyRabbitMQ.Sample.Consumer");
+var assemblies = new [] { Assembly.Load("DandyRabbitMQ.Sample.Consumer"), Assembly.Load("DandyRabbitMQ.Sample.Shared") };
 
 builder.Services.AddDandyRabbitMQConsumer(cfg =>
 {
@@ -24,7 +24,7 @@ builder.Services.AddDandyRabbitMQConsumer(cfg =>
     cfg.Connectivity.OnConnectionException((_, ex) => Console.WriteLine($"Exception occurred: {ex}"));
     cfg.Serialization.UseSystemTextJson();
 
-    cfg.ScanInAssemblies(assembly);
+    cfg.ScanInAssemblies(assemblies);
     cfg.SubscribeChannel(channel =>
     {
         channel.Exchange.Name = "messages";
