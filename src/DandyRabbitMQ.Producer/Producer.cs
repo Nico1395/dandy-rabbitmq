@@ -1,7 +1,6 @@
 using System.Text;
 using DandyRabbitMQ.Core.Connectivity;
 using DandyRabbitMQ.Core.Messages.Configuration;
-using DandyRabbitMQ.Core.Messages.Types;
 using DandyRabbitMQ.Serialization;
 using RabbitMQ.Client;
 
@@ -10,8 +9,7 @@ namespace DandyRabbitMQ.Producer;
 internal sealed class Producer(
     IPayloadSerializer payloadSerializer,
     IConnectionProvider connectionProvider,
-    MessagesConfiguration messagesConfiguration,
-    ProducerConfiguration producerConfiguration) : IProducer
+    MessagesConfiguration messagesConfiguration) : IProducer
 {
     private IChannel? _channel;
 
@@ -24,13 +22,16 @@ internal sealed class Producer(
         if (string.IsNullOrWhiteSpace(exchange))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(exchange));
 
+        if (!messagesConfiguration.MessagesByRuntimeType.TryGetValue(message.GetType(), out var messageConfiguration))
+            throw new InvalidOperationException($"Failed to resolve message configuration for type '{message.GetType()}'.");
+
         var properties = new BasicProperties
         {
-            Type = messagesConfiguration.MessagesByRuntimeType[message.GetType()].Type,
+            Type = messageConfiguration.Key,
             MessageId = id.ToString(),
             Timestamp = new AmqpTimestamp(timestamp.Ticks),
         };
-        var json = payloadSerializer.Serialize(message);
+        var json = payloadSerializer.Serialize(message, messageConfiguration.RuntimeType);
         var channel = await GetChannelAsync(cancellationToken);
 
         foreach (var routingKey in filteredRoutingKeys)
