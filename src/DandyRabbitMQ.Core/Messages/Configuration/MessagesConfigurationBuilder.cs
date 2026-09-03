@@ -17,7 +17,7 @@ public sealed class MessagesConfigurationBuilder
         if (configuration == null)
             return;
 
-        _messages = new Dictionary<Type, MessageConfiguration>(configuration.Messages);
+        _messages = new Dictionary<Type, MessageConfiguration>(configuration.MessagesByRuntimeType);
         _assemblies = configuration.Assemblies;
     }
 
@@ -42,7 +42,7 @@ public sealed class MessagesConfigurationBuilder
     {
         return new MessagesConfiguration
         {
-            Messages = new ConcurrentDictionary<Type, MessageConfiguration>(_messages),
+            MessagesByRuntimeType = new ConcurrentDictionary<Type, MessageConfiguration>(_messages),
             Assemblies = _assemblies,
         };
     }

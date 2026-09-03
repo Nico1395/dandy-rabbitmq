@@ -8,12 +8,6 @@ public sealed class ProducerConfigurationBuilder
 {
     private readonly ProducerConfiguration _configuration = new();
 
-    public ProducerConfigurationBuilder UseTypeNameFactory(Func<object, string> typeNameFactory)
-    {
-        _configuration.TypeNameFactory = typeNameFactory;
-        return this;
-    }
-
     public SerializationConfigurationBuilder Serialization { get; set; } = new();
     public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
     public MessagesConfigurationBuilder Messages { get; set; } = new();

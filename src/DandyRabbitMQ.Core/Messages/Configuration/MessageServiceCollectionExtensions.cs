@@ -45,9 +45,10 @@ public static class MessageServiceCollectionExtensions
         foreach (var messageType in messageTypes)
         {
             var metadata = new ConcurrentDictionary<string, object>();
-            var messageConfiguration = configuration.Messages.GetOrAdd(messageType, type => new()
+            var messageConfiguration = configuration.MessagesByRuntimeType.GetOrAdd(messageType, t => new()
             {
-                RuntimeType = type,
+                RuntimeType = t,
+                Type = t.Name,
                 Metadata = metadata,
             });
 

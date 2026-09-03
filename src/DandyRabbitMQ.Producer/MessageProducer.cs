@@ -1,5 +1,6 @@
 using System.Text;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Core.Messages.Types;
 using DandyRabbitMQ.Serialization;
 using RabbitMQ.Client;
@@ -9,7 +10,8 @@ namespace DandyRabbitMQ.Producer;
 internal sealed class MessageProducer(
     IPayloadSerializer payloadSerializer,
     IConnectionProvider connectionProvider,
-    ProducerConfiguration configuration) : IMessageProducer
+    MessagesConfiguration messagesConfiguration,
+    ProducerConfiguration producerConfiguration) : IMessageProducer
 {
     private IChannel? _channel;
 
@@ -24,13 +26,13 @@ internal sealed class MessageProducer(
 
         var properties = new BasicProperties
         {
-            Type = GetTypeName(message),
+            Type = messagesConfiguration.MessagesByRuntimeType[message.GetType()].Type,
             MessageId = id.ToString(),
             Timestamp = new AmqpTimestamp(timestamp.Ticks),
         };
         var json = payloadSerializer.Serialize(message);
-
         var channel = await GetChannelAsync(cancellationToken);
+
         foreach (var routingKey in filteredRoutingKeys)
         {
             await channel.BasicPublishAsync(
@@ -45,13 +47,6 @@ internal sealed class MessageProducer(
         return true;
     }
 
-    private string GetTypeName(object message)
-    {
-        return configuration.TypeNameFactory != null
-            ? configuration.TypeNameFactory(message)
-            : MessageTypeNameMap.GetName(message.GetType());
-    }
-    
     private async Task<IChannel> GetChannelAsync(CancellationToken cancellationToken)
     {
         if (_channel != null)

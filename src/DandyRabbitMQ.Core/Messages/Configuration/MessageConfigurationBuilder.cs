@@ -13,6 +13,7 @@ public sealed class MessageConfigurationBuilder
         _message = new MessageConfiguration
         {
             RuntimeType = messageType,
+            Type = messageType.Name,
             Metadata = _metadata,
         };
     }
