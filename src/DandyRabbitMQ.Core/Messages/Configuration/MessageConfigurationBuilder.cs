@@ -13,14 +13,14 @@ public sealed class MessageConfigurationBuilder
         _message = new MessageConfiguration
         {
             RuntimeType = messageType,
-            Type = messageType.Name,
+            Key = messageType.Name,        // Defaulting to the type name. This can be overridden with the builder or with an attribute
             Metadata = _metadata,
         };
     }
 
     public MessageConfigurationBuilder SetType(string type)
     {
-        _message.Type = type;
+        _message.Key = type;
         return this;
     }
 

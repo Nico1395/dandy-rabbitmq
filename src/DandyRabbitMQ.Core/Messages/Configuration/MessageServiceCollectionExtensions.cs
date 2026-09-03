@@ -48,7 +48,7 @@ public static class MessageServiceCollectionExtensions
             var messageConfiguration = configuration.MessagesByRuntimeType.GetOrAdd(messageType, t => new()
             {
                 RuntimeType = t,
-                Type = t.Name,
+                Key = t.Name,
                 Metadata = metadata,
             });
 
@@ -61,8 +61,8 @@ public static class MessageServiceCollectionExtensions
                     messageConfiguration.RoutingKeys = routingKeyAttribute.Keys;
                 else if (attribute is MessageMetadataAttribute metadataAttribute)
                     metadata[metadataAttribute.Key] = metadataAttribute.Value;
-                else if (attribute is MessageTypeAttribute typeAttribute)
-                    messageConfiguration.Type = typeAttribute.Type;
+                else if (attribute is MessageKeyAttribute keyAttribute)
+                    messageConfiguration.Key = keyAttribute.Key;
                 else
                     throw new InvalidOperationException($"Unknown attribute type: {attribute.GetType()}");
             }

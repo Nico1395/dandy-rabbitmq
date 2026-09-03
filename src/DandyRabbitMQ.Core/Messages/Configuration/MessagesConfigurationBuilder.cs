@@ -5,8 +5,9 @@ namespace DandyRabbitMQ.Core.Messages.Configuration;
 
 public sealed class MessagesConfigurationBuilder
 {
-    private readonly Dictionary<Type, MessageConfiguration> _messages = new();
-    private Assembly[]? _assemblies;
+    private readonly Dictionary<Type, MessageConfiguration> _messagesByRuntimeType = new();
+    private readonly Dictionary<string, MessageConfiguration> _messagesByKey = new();
+    private Assembly[] _assemblies = [];
 
     public MessagesConfigurationBuilder()
     {
@@ -17,7 +18,7 @@ public sealed class MessagesConfigurationBuilder
         if (configuration == null)
             return;
 
-        _messages = new Dictionary<Type, MessageConfiguration>(configuration.MessagesByRuntimeType);
+        _messagesByRuntimeType = new Dictionary<Type, MessageConfiguration>(configuration.MessagesByRuntimeType);
         _assemblies = configuration.Assemblies;
     }
 
@@ -25,9 +26,10 @@ public sealed class MessagesConfigurationBuilder
     {
         var builder = new MessageConfigurationBuilder(messageType);
         builderAction.Invoke(builder);
-
         var message = builder.Build();
-        _messages[message.RuntimeType] = message;
+
+        _messagesByRuntimeType[message.RuntimeType] = message;
+        _messagesByKey[message.Key] = message;
 
         return this;
     }
@@ -42,7 +44,8 @@ public sealed class MessagesConfigurationBuilder
     {
         return new MessagesConfiguration
         {
-            MessagesByRuntimeType = new ConcurrentDictionary<Type, MessageConfiguration>(_messages),
+            MessagesByRuntimeType = new ConcurrentDictionary<Type, MessageConfiguration>(_messagesByRuntimeType),
+            MessagesByKey = new ConcurrentDictionary<string, MessageConfiguration>(_messagesByKey),
             Assemblies = _assemblies,
         };
     }
