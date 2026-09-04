@@ -19,7 +19,7 @@ public sealed class DefaultFixture : IServiceProvider
     {
         return _serviceProvider.GetService(serviceType);
     }
-    
+
     public IPayloadSerializer GetPayloadSerializer()
     {
         return _serviceProvider.GetRequiredService<IPayloadSerializer>();
