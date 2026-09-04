@@ -6,7 +6,7 @@ public class NewtonsoftJsonPayloadSerializer(NewtonsoftJsonPayloadSerializerConf
 {
     public string Serialize(object payload, Type? inputType)
     {
-        return JsonConvert.SerializeObject(inputType, inputType, configuration.JsonSerializerSettings);
+        return JsonConvert.SerializeObject(payload, inputType, configuration.JsonSerializerSettings);
     }
 
     public object? Deserialize(string payload, Type returnType)

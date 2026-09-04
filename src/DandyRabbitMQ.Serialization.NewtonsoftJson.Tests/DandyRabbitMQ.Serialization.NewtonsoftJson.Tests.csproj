@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DandyRabbitMQ.Core\DandyRabbitMQ.Core.csproj" />
       <ProjectReference Include="..\DandyRabbitMQ.Serialization.NewtonsoftJson\DandyRabbitMQ.Serialization.NewtonsoftJson.csproj" />
     </ItemGroup>
 
