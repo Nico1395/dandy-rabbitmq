@@ -1,4 +1,5 @@
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 
@@ -11,12 +12,14 @@ public sealed class ProducerConfigurationBuilder
     public SerializationConfigurationBuilder Serialization { get; set; } = new();
     public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
     public MessagesConfigurationBuilder Messages { get; set; } = new();
+    public EncodingConfigurationBuilder Encoding { get; set; } = new();
 
     internal ProducerConfiguration Build()
     {
         _configuration.SerializationConfigurationBuilder = Serialization;
         _configuration.ConnectivityConfigurationBuilder = Connectivity;
         _configuration.MessagesConfigurationBuilder = Messages;
+        _configuration.EncodingConfigurationBuilder = Encoding;
 
         return _configuration;
     }
