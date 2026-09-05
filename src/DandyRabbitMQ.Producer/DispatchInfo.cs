@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 
 namespace DandyRabbitMQ.Producer;
 
-internal readonly struct DispatchInfo(Type runtimeType, string exchange, string[] routingKeys, BasicProperties properties)
+public readonly struct DispatchInfo(Type runtimeType, string exchange, string[] routingKeys, BasicProperties properties)
 {
     public Type RuntimeType { get; } = runtimeType;
     public string Exchange { get; } = exchange;
