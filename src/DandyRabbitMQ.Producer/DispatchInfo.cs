@@ -14,25 +14,23 @@ public readonly struct DispatchInfo(Type runtimeType, string exchange, string[] 
     {
         properties ??= new BasicProperties();
 
+        var messageType = message.GetType();
+        var messageConfiguration = messagesConfiguration.MessagesByRuntimeType.GetValueOrDefault(messageType);
+
+        properties.Type ??= messageConfiguration?.Key ?? messageType.Name;
+
         string[]? targetRoutingKeys = null;
-        Type? runtimeType = null;
-
-        // We can't send a message without knowing the exchange and at least one routing keys. If either is missing,
-        // we need to resolve the message configuration and fill in missing information.
-
         if (exchange == null || routingKeys == null)
         {
-            if (!messagesConfiguration.MessagesByRuntimeType.TryGetValue(message.GetType(), out var messageConfiguration))
+            if (messageConfiguration == null)
                 throw new InvalidOperationException($"Failed to resolve message configuration for type '{message.GetType()}'.");
 
-            runtimeType = messageConfiguration.RuntimeType;
-            exchange ??= messageConfiguration.Exchange;
             targetRoutingKeys = routingKeys != null ? routingKeys.ToArray() : messageConfiguration.RoutingKeys;
-            properties.Type = messageConfiguration.Key;
+            exchange ??= messageConfiguration.Exchange;
         }
 
-        runtimeType ??= message.GetType();
-        properties.Type ??= runtimeType.Name;
+        if (string.IsNullOrWhiteSpace(exchange))
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(exchange));
 
         if (targetRoutingKeys == null)
             throw new InvalidOperationException("Failed to resolve routing keys. None were provided and none were configured.");
@@ -41,9 +39,10 @@ public readonly struct DispatchInfo(Type runtimeType, string exchange, string[] 
         if (targetRoutingKeys.Length == 0)
             throw new InvalidOperationException("Routing keys were resolved, but they are empty.");
 
-        if (string.IsNullOrWhiteSpace(exchange))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(exchange));
-
-        return new DispatchInfo(runtimeType, exchange, targetRoutingKeys, properties);
+        return new DispatchInfo(
+            messageConfiguration?.RuntimeType ?? messageType,
+            exchange,
+            targetRoutingKeys,
+            properties);
     }
 }
