@@ -4,7 +4,7 @@ namespace DandyRabbitMQ.Consumer.Worker;
 
 public class ConsumerPipeline(IServiceProvider serviceProvider) : IConsumerPipeline
 {
-    public async Task<ConsumerResult> ExecuteAsync<TMessage>(TMessage message, CancellationToken cancellationToken)
+    public async Task<ConsumerResult> ExecuteAsync<TMessage>(TMessage message, ConsumerContext context, CancellationToken cancellationToken)
         where TMessage : class
     {
         try
@@ -12,21 +12,21 @@ public class ConsumerPipeline(IServiceProvider serviceProvider) : IConsumerPipel
             var consumer = serviceProvider.GetRequiredService<IConsumer<TMessage>>();
             var middlewares = serviceProvider.GetServices<IConsumerMiddleware<TMessage>>();
 
-            ConsumerDelegate consumerDelegate = () => consumer.ConsumeAsync(message, cancellationToken);
+            ConsumerDelegate consumerDelegate = () => consumer.ConsumeAsync(message, context, cancellationToken);
 
             foreach (var middleware in middlewares.Reverse())
             {
                 var next = consumerDelegate;
-                consumerDelegate = () => middleware.InterceptAsync(message, next, cancellationToken);
+                consumerDelegate = () => middleware.InterceptAsync(message, context, next, cancellationToken);
             }
 
             return await consumerDelegate.Invoke();
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
             var exceptionHandler = serviceProvider.GetService<IConsumerExceptionHandler<TMessage>>();
             if (exceptionHandler != null)
-                await exceptionHandler.HandleAsync(message, ex, cancellationToken);
+                await exceptionHandler.HandleAsync(message, context, exception, cancellationToken);
 
             throw;
         }
