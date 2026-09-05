@@ -1,6 +1,8 @@
+using RabbitMQ.Client;
+
 namespace DandyRabbitMQ.Producer;
 
 public interface IProducer
 {
-    Task<bool> ProduceAsync(string exchange, IEnumerable<string> routingKeys, Guid id, DateTime timestamp, object message, CancellationToken cancellationToken);
+    Task ProduceAsync(string? exchange, IEnumerable<string>? routingKeys, object message, BasicProperties? properties, CancellationToken cancellationToken);
 }
