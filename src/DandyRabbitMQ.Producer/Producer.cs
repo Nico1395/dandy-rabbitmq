@@ -1,5 +1,5 @@
-using System.Text;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Encoding;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 using RabbitMQ.Client;
@@ -8,6 +8,7 @@ namespace DandyRabbitMQ.Producer;
 
 internal sealed class Producer(
     IPayloadSerializer payloadSerializer,
+    IPayloadEncoder payloadEncoder,
     IConnectionProvider connectionProvider,
     MessagesConfiguration messagesConfiguration) : IProducer
 {
@@ -16,7 +17,8 @@ internal sealed class Producer(
     public async Task ProduceAsync(string? exchange, IEnumerable<string>? routingKeys, object message, BasicProperties? properties, CancellationToken cancellationToken)
     {
         var dispatchInfo = DispatchInfo.Create(messagesConfiguration, exchange, routingKeys, message, properties);
-        var json = payloadSerializer.Serialize(message, dispatchInfo.RuntimeType);
+        var payload = payloadSerializer.Serialize(message, dispatchInfo.RuntimeType);
+        var encodedPayload = payloadEncoder.Encode(payload);
         var channel = await GetChannelAsync(cancellationToken);
 
         foreach (var routingKey in dispatchInfo.RoutingKeys)
@@ -26,7 +28,7 @@ internal sealed class Producer(
                 routingKey: routingKey,
                 mandatory: true,
                 basicProperties: dispatchInfo.Properties,
-                body: Encoding.UTF8.GetBytes(json),
+                body: encodedPayload,
                 cancellationToken: cancellationToken);
         }
     }
