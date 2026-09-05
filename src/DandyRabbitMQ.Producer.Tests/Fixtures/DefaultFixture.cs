@@ -1,0 +1,24 @@
+using DandyRabbitMQ.Core.Messages.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace DandyRabbitMQ.Producer.Tests.Fixtures;
+
+public sealed class DefaultFixture : IServiceProvider
+{
+    private readonly IServiceProvider _serviceProvider;
+    
+    public DefaultFixture()
+    {
+        var assemblies = new[] { typeof(DefaultFixture).Assembly };
+        var services = new ServiceCollection();
+
+        services.AddDandyRabbitMQMessages(config => config.ScanInAssemblies(assemblies));
+
+        _serviceProvider = services.BuildServiceProvider();
+    }
+
+    public object? GetService(Type serviceType)
+    {
+        return _serviceProvider.GetService(serviceType);
+    }
+}
