@@ -1,4 +1,3 @@
-using DandyRabbitMQ.Core.Messages;
 using DandyRabbitMQ.Producer;
 using DandyRabbitMQ.Sample.Shared;
 using Microsoft.Extensions.Hosting;
@@ -93,11 +92,8 @@ internal sealed class ProducerMenu(IProducer producer) : BackgroundService
                     Text = input,
                 };
 
-                var success = await producer.ProduceAsync("messages", "all", message, cancellationToken);
-                if (success)
-                    break;
-
-                Console.WriteLine("Failed to send message.");
+                await producer.ProduceAsync(message, cancellationToken);
+                break;
             }
             catch (Exception ex)
             {
