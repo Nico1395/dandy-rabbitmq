@@ -23,8 +23,8 @@ public class Receiver(
 
     public async Task ReceiveAsync(BasicDeliverEventArgs args, SemaphoreSlim ackLock, IChannel channel, ChannelConfiguration configuration, CancellationToken cancellationToken)
     {
-        // Assume failure
-        var result = ConsumerResult.Nack();
+        var result = ConsumerResult.Nack();     // Assume failure
+        var context = new ConsumerContext(args, configuration);
         object? message = null;
 
         try
@@ -41,13 +41,12 @@ public class Receiver(
 
             message = payloadSerializer.Deserialize(json, messageConfiguration.RuntimeType);
             using var scope = serviceProvider.CreateScope();
-            {
-                var executeAsync = GetExecuteAsync(messageConfiguration.RuntimeType);
-                if (executeAsync.Invoke(consumerPipeline, parameters: [message, cancellationToken]) is not Task<ConsumerResult> task)
-                    throw new InvalidOperationException($"Failed to handle '{messageConfiguration.RuntimeType}'.");
 
-                result = await task;
-            }
+            var executeAsync = GetExecuteAsync(messageConfiguration.RuntimeType);
+            if (executeAsync.Invoke(consumerPipeline, parameters: [message, context, cancellationToken]) is not Task<ConsumerResult> task)
+                throw new InvalidOperationException($"Failed to handle '{messageConfiguration.RuntimeType}'.");
+
+            result = await task;
         }
         catch (Exception ex)
         {
@@ -55,7 +54,7 @@ public class Receiver(
         }
 
         await AckOrNackAsync(args, ackLock, channel, result, cancellationToken);
-        await InterceptAckOrNackAsync(args, message, result, cancellationToken);
+        await InterceptAckOrNackAsync(message, context, result, cancellationToken);
     }
 
     private static MethodInfo GetExecuteAsync(Type messageType)
@@ -105,7 +104,7 @@ public class Receiver(
         }
     }
 
-    private async Task InterceptAckOrNackAsync(BasicDeliverEventArgs args, object? message, ConsumerResult result, CancellationToken cancellationToken)
+    private async Task InterceptAckOrNackAsync(object? message, ConsumerContext context, ConsumerResult result, CancellationToken cancellationToken)
     {
         if (message == null)
             return;
@@ -117,9 +116,9 @@ public class Receiver(
                 return;
 
             if (result.Status == ConsumerStatus.Ack)
-                await interceptor.OnAfterAckAsync(args, message, result, cancellationToken);
+                await interceptor.OnAfterAckAsync(message, context, result, cancellationToken);
             else
-                await interceptor.OnAfterNackAsync(args, message, result, cancellationToken);
+                await interceptor.OnAfterNackAsync(message, context, result, cancellationToken);
         }
         catch (Exception ex)
         {
