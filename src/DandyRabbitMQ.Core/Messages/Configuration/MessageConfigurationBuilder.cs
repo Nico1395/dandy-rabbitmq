@@ -18,9 +18,9 @@ public sealed class MessageConfigurationBuilder
         };
     }
 
-    public MessageConfigurationBuilder SetType(string type)
+    public MessageConfigurationBuilder SetKey(string key)
     {
-        _message.Key = type;
+        _message.Key = key;
         return this;
     }
 
