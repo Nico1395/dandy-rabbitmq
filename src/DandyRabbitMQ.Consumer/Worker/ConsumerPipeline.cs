@@ -5,7 +5,6 @@ namespace DandyRabbitMQ.Consumer.Worker;
 public class ConsumerPipeline(IServiceProvider serviceProvider) : IConsumerPipeline
 {
     public async Task<ConsumerResult> ExecuteAsync<TMessage>(TMessage message, ConsumerContext context, CancellationToken cancellationToken)
-        where TMessage : class
     {
         try
         {

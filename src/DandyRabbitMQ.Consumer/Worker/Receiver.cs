@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using DandyRabbitMQ.Consumer.Configuration;
 using DandyRabbitMQ.Consumer.Interceptors;
+using DandyRabbitMQ.Core.Encoding;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ public class Receiver(
     MessagesConfiguration messagesConfiguration,
     IServiceProvider serviceProvider,
     IConsumerPipeline consumerPipeline,
+    IPayloadEncoder payloadEncoder,
     IPayloadSerializer payloadSerializer) : IReceiver
 {
     private static readonly ConcurrentDictionary<Type, MethodInfo> _executeAsync = [];
@@ -34,12 +36,12 @@ public class Receiver(
 
             if (!messagesConfiguration.MessagesByKey.TryGetValue(args.BasicProperties.Type, out var messageConfiguration))
                 throw new InvalidOperationException("Failed to resolve message type.");
-
-            var json = Encoding.UTF8.GetString(args.Body.Span);
-            if (string.IsNullOrWhiteSpace(json))
+            
+            var serialized = payloadEncoder.Decode(args.Body.Span);
+            if (string.IsNullOrWhiteSpace(serialized))
                 throw new InvalidOperationException("Failed to deserialize message.");
 
-            message = payloadSerializer.Deserialize(json, messageConfiguration.RuntimeType);
+            message = payloadSerializer.Deserialize(serialized, messageConfiguration.RuntimeType);
             using var scope = serviceProvider.CreateScope();
 
             var executeAsync = GetExecuteAsync(messageConfiguration.RuntimeType);
