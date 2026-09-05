@@ -5,8 +5,11 @@
   </Folder>
   <Project Path="DandyRabbitMQ.Consumer/DandyRabbitMQ.Consumer.csproj" />
   <Project Path="DandyRabbitMQ.Core/DandyRabbitMQ.Core.csproj" />
+  <Project Path="DandyRabbitMQ.Producer.Tests/DandyRabbitMQ.Producer.Tests.csproj" />
   <Project Path="DandyRabbitMQ.Producer/DandyRabbitMQ.Producer.csproj" />
+  <Project Path="DandyRabbitMQ.Serialization.NewtonsoftJson.Tests/DandyRabbitMQ.Serialization.NewtonsoftJson.Tests.csproj" />
   <Project Path="DandyRabbitMQ.Serialization.NewtonsoftJson\DandyRabbitMQ.Serialization.NewtonsoftJson.csproj" />
+  <Project Path="DandyRabbitMQ.Serialization.SystemTextJson.Tests/DandyRabbitMQ.Serialization.SystemTextJson.Tests.csproj" />
   <Project Path="DandyRabbitMQ.Serialization.SystemTextJson/DandyRabbitMQ.Serialization.SystemTextJson.csproj" />
   <Project Path="DandyRabbitMQ.Serialization/DandyRabbitMQ.Serialization.csproj" />
 </Solution>

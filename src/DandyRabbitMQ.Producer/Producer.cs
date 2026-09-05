@@ -13,39 +13,22 @@ internal sealed class Producer(
 {
     private IChannel? _channel;
 
-    public async Task<bool> ProduceAsync(string exchange, IEnumerable<string> routingKeys, Guid id, DateTime timestamp, object message, CancellationToken cancellationToken)
+    public async Task ProduceAsync(string? exchange, IEnumerable<string>? routingKeys, object message, BasicProperties? properties, CancellationToken cancellationToken)
     {
-        var filteredRoutingKeys = routingKeys.Where(key => !string.IsNullOrWhiteSpace(key)).Distinct().ToArray();
-        if (filteredRoutingKeys.Length == 0)
-            return false;
-
-        if (string.IsNullOrWhiteSpace(exchange))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(exchange));
-
-        if (!messagesConfiguration.MessagesByRuntimeType.TryGetValue(message.GetType(), out var messageConfiguration))
-            throw new InvalidOperationException($"Failed to resolve message configuration for type '{message.GetType()}'.");
-
-        var properties = new BasicProperties
-        {
-            Type = messageConfiguration.Key,
-            MessageId = id.ToString(),
-            Timestamp = new AmqpTimestamp(timestamp.Ticks),
-        };
-        var json = payloadSerializer.Serialize(message, messageConfiguration.RuntimeType);
+        var dispatchInfo = DispatchInfo.Create(messagesConfiguration, exchange, routingKeys, message, properties);
+        var json = payloadSerializer.Serialize(message, dispatchInfo.RuntimeType);
         var channel = await GetChannelAsync(cancellationToken);
 
-        foreach (var routingKey in filteredRoutingKeys)
+        foreach (var routingKey in dispatchInfo.RoutingKeys)
         {
             await channel.BasicPublishAsync(
-                exchange: exchange,
+                exchange: dispatchInfo.Exchange,
                 routingKey: routingKey,
                 mandatory: true,
-                basicProperties: properties,
+                basicProperties: dispatchInfo.Properties,
                 body: Encoding.UTF8.GetBytes(json),
                 cancellationToken: cancellationToken);
         }
-
-        return true;
     }
 
     private async Task<IChannel> GetChannelAsync(CancellationToken cancellationToken)
