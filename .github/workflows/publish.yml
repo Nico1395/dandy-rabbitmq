@@ -6,7 +6,7 @@ on:
       - published
 
 env:
-  SLN: "./src/DandyMediator.slnx"
+  SLN: "./src/DandyRabbitMQ.slnx"
   DOTNET_VERSION: "10.0.x"
   PACK_OUTPUT_DIRECTORY: "${{ github.workspace }}/output"
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
