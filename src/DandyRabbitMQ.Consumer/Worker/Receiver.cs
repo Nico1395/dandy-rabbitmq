@@ -1,9 +1,9 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using DandyRabbitMQ.Consumer.Configuration;
 using DandyRabbitMQ.Consumer.Interceptors;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
