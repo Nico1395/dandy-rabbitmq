@@ -1,12 +1,12 @@
 using RabbitMQ.Client;
 
-namespace DandyRabbitMQ.Consumer.Configuration;
+namespace DandyRabbitMQ.Core.Declarations.Configuration;
 
-public sealed class ChannelConfiguration
+public sealed class ChannelConfiguration(string exchangeName, string queueName)
 {
     public CreateChannelOptions? Options { get; set; }
-    public ExchangeConfiguration Exchange { get; set; } = new();
-    public QueueConfiguration Queue { get; set; } = new();
+    public ExchangeConfiguration Exchange { get; set; } = new(exchangeName);
+    public QueueConfiguration Queue { get; set; } = new(queueName);
     public uint PrefetchSize { get; set; } = 0;
     public ushort PrefetchCount { get; set; } = 32;
     public bool Global { get; set; }

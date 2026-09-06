@@ -1,4 +1,5 @@
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
@@ -21,6 +22,7 @@ public static class ProducerServiceCollectionExtensions
         services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilder.Build());
         services.AddDandyRabbitMQMessages(configuration.MessagesConfigurationBuilder.Build());
         services.AddDandyRabbitMQEncoding(configuration.EncodingConfigurationBuilder.Build());
+        services.AddDandyRabbitMQDeclarations(configuration.DeclarationsConfiguration.Build());
 
         return services;
     }

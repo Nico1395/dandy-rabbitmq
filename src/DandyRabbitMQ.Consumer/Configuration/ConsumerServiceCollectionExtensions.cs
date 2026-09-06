@@ -1,6 +1,7 @@
 using System.Reflection;
 using DandyRabbitMQ.Consumer.Worker;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
@@ -35,6 +36,7 @@ public static class ConsumerServiceCollectionExtensions
         services.AddDandyRabbitMQSerialization(configuration.SerializationConfigurationBuilder.Build());
         services.AddDandyRabbitMQMessages(configuration.MessagesConfigurationBuilder.Build());
         services.AddDandyRabbitMQEncoding(configuration.EncodingConfigurationBuilder.Build());
+        services.AddDandyRabbitMQDeclarations(configuration.DeclarationsConfigurationBuilder.Build());
 
         return services;
     }

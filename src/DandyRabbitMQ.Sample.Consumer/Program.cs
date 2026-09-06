@@ -23,14 +23,12 @@ builder.Services.AddDandyRabbitMQConsumer(cfg =>
     cfg.Connectivity.ConnectToCluster("dev", "dev", [new Uri("localhost:5672"), new Uri("localhost:5673")], recoveryInterval: null);
     cfg.Connectivity.OnConnectionException((_, ex) => Console.WriteLine($"Exception occurred: {ex}"));
     cfg.Serialization.UseSystemTextJson();
-
-    cfg.ScanInAssemblies(assemblies);
-    cfg.SubscribeChannel(channel =>
+    cfg.Declarations.SubscribeChannel("messages", "consumer-1", channel =>
     {
-        channel.Exchange.Name = "messages";
-        channel.Queue.Name = "consumer-1";
         channel.Queue.RoutingKeys = ["all"];
     });
+
+    cfg.ScanInAssemblies(assemblies);
 });
 
 Console.WriteLine("...done!");
