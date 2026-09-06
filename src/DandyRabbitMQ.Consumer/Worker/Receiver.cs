@@ -13,6 +13,9 @@ using RabbitMQ.Client.Events;
 
 namespace DandyRabbitMQ.Consumer.Worker;
 
+/// <summary>
+/// Receives deliveries, invokes consumers, and acknowledges results.
+/// </summary>
 public class Receiver(
     ConsumerConfiguration consumerConfiguration,
     MessagesConfiguration messagesConfiguration,
@@ -23,6 +26,13 @@ public class Receiver(
 {
     private static readonly ConcurrentDictionary<Type, MethodInfo> _executeAsync = [];
 
+    /// <inheritdoc/>
+    /// <param name="args">The delivery event arguments.</param>
+    /// <param name="ackLock">The lock protecting channel acknowledgements.</param>
+    /// <param name="channel">The RabbitMQ channel.</param>
+    /// <param name="configuration">The channel configuration.</param>
+    /// <param name="cancellationToken">The token used to cancel processing.</param>
+    /// <returns>A task representing asynchronous delivery processing.</returns>
     public async Task ReceiveAsync(BasicDeliverEventArgs args, SemaphoreSlim ackLock, IChannel channel, ChannelConfiguration configuration, CancellationToken cancellationToken)
     {
         var result = ConsumerResult.Nack();     // Assume failure
@@ -36,7 +46,7 @@ public class Receiver(
 
             if (!messagesConfiguration.MessagesByKey.TryGetValue(args.BasicProperties.Type, out var messageConfiguration))
                 throw new InvalidOperationException("Failed to resolve message type.");
-            
+
             var serialized = payloadEncoder.Decode(args.Body.Span);
             if (string.IsNullOrWhiteSpace(serialized))
                 throw new InvalidOperationException("Failed to deserialize message.");

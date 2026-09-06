@@ -1,3 +1,4 @@
+using DandyRabbitMQ.Core.Connectivity.Configuration;
 using RabbitMQ.Client;
 
 namespace DandyRabbitMQ.Core.Connectivity;

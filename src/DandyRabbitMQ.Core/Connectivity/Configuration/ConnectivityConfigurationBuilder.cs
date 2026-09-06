@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace DandyRabbitMQ.Core.Connectivity;
+namespace DandyRabbitMQ.Core.Connectivity.Configuration;
 
 /// <summary>
 /// Builder for <see cref="ConnectivityConfiguration"/>.
@@ -8,7 +8,6 @@ namespace DandyRabbitMQ.Core.Connectivity;
 public sealed class ConnectivityConfigurationBuilder
 {
     private readonly ConnectivityConfiguration _configuration = new();
-
     /// <summary>
     /// Facade to configure a connection to a cluster of multiple RabbitMQ <paramref name="nodes"/> using <paramref name="userName"/>
     /// and <paramref name="password"/>.
@@ -46,7 +45,7 @@ public sealed class ConnectivityConfigurationBuilder
         factory(_configuration.ConnectionFactoryInternal);
         return this;
     }
-    
+
     /// <summary>
     /// Allows overwriting the underlying, internally used <see cref="ConnectionFactory"/>.
     /// </summary>
@@ -69,5 +68,9 @@ public sealed class ConnectivityConfigurationBuilder
         return this;
     }
 
+    /// <summary>
+    /// Builds the connectivity configuration.
+    /// </summary>
+    /// <returns>The connectivity configuration.</returns>
     public ConnectivityConfiguration Build() => _configuration;
 }
