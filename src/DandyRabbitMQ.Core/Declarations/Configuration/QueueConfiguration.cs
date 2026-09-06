@@ -1,8 +1,8 @@
-namespace DandyRabbitMQ.Consumer.Configuration;
+namespace DandyRabbitMQ.Core.Declarations.Configuration;
 
-public sealed class QueueConfiguration
+public sealed class QueueConfiguration(string name)
 {
-    public string? Name { get; set; }
+    public string Name { get; } = name;
     public string[]? RoutingKeys { get; set; }
     public bool Durable { get; set; } = true;
     public bool Exclusive { get; set; } = false;
