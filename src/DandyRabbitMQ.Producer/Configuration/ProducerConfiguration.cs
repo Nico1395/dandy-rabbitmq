@@ -1,10 +1,10 @@
-using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Connectivity.Configuration;
 using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 
-namespace DandyRabbitMQ.Producer;
+namespace DandyRabbitMQ.Producer.Configuration;
 
 /// <summary>
 /// Stores the configuration used to register producer services.

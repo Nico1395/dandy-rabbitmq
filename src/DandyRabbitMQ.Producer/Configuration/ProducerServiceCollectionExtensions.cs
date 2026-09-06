@@ -1,11 +1,11 @@
-using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Connectivity.Configuration;
 using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DandyRabbitMQ.Producer;
+namespace DandyRabbitMQ.Producer.Configuration;
 
 /// <summary>
 /// Provides dependency injection registration extensions for the producer.

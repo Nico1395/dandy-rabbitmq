@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DandyRabbitMQ.Core.Connectivity;
+namespace DandyRabbitMQ.Core.Connectivity.Configuration;
 
 /// <summary>
 /// Provides dependency injection registration extensions for connectivity.
