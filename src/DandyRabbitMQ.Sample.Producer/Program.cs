@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DandyRabbitMQ.Producer;
+using DandyRabbitMQ.Producer.Configuration;
 using DandyRabbitMQ.Sample.Producer;
 using DandyRabbitMQ.Serialization.SystemTextJson;
 using Microsoft.Extensions.Configuration;
