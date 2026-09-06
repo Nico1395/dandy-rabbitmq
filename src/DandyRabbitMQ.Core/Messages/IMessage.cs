@@ -9,6 +9,7 @@ public interface IMessage
     /// Gets the message identifier.
     /// </summary>
     Guid Id { get; }
+
     /// <summary>
     /// Gets the message timestamp.
     /// </summary>

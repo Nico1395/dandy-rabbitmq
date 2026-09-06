@@ -10,6 +10,7 @@ public class MessageMetadataAttribute(string key, object value) : MessageAttribu
     /// Gets the metadata key.
     /// </summary>
     public string Key { get; } = key;
+
     /// <summary>
     /// Gets the metadata value.
     /// </summary>

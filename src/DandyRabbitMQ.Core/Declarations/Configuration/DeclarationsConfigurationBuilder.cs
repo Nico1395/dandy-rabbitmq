@@ -6,7 +6,6 @@ namespace DandyRabbitMQ.Core.Declarations.Configuration;
 public sealed class DeclarationsConfigurationBuilder
 {
     private readonly DeclarationsConfiguration _configuration = new();
-
     /// <summary>
     /// Configures an <paramref name="exchange"/>, <paramref name="queue"/>, and channel subscription.
     /// </summary>

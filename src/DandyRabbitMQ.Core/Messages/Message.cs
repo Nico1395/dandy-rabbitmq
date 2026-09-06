@@ -9,6 +9,7 @@ public abstract class Message : IMessage
     /// Gets or initializes the message identifier.
     /// </summary>
     public Guid Id { get; init; } = Guid.NewGuid();
+
     /// <summary>
     /// Gets or initializes the message timestamp.
     /// </summary>

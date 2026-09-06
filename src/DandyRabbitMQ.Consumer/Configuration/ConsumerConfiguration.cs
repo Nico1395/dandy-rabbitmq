@@ -22,6 +22,7 @@ public sealed class ConsumerConfiguration
     /// Gets the assemblies scanned for consumer implementations and messages.
     /// </summary>
     public Assembly[]? Assemblies { get; internal set; }
+
     /// <summary>
     /// Gets the configured consumer interceptor type.
     /// </summary>
@@ -31,14 +32,17 @@ public sealed class ConsumerConfiguration
     /// Gets the handler for worker initialization exceptions.
     /// </summary>
     public Action<IServiceProvider, Exception>? OnExceptionWhenInitializingWorker { get; internal set; }
+
     /// <summary>
     /// Gets the handler for message receiving exceptions.
     /// </summary>
     public Action<IServiceProvider, Exception>? OnExceptionWhenReceivingMessage { get; internal set; }
+
     /// <summary>
     /// Gets the handler for acknowledgement exceptions.
     /// </summary>
     public Action<IServiceProvider, Exception>? OnExceptionWhenAckOrNack { get; internal set; }
+
     /// <summary>
     /// Gets the handler for interceptor exceptions.
     /// </summary>

@@ -8,12 +8,11 @@ namespace DandyRabbitMQ.Serialization.SystemTextJson;
 public sealed class SystemTextJsonPayloadSerializerConfigurationBuilder
 {
     private readonly SystemTextJsonPayloadSerializerConfiguration _configuration = new();
-
     /// <summary>
     /// Gets or sets the System.Text.Json options.
     /// </summary>
     public JsonSerializerOptions JsonSerializerOptions { get; set; } = new();
-    
+
     internal SystemTextJsonPayloadSerializerConfiguration Build()
     {
         _configuration.JsonSerializerOptions = JsonSerializerOptions;

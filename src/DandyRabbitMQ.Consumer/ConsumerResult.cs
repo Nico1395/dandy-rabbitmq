@@ -6,7 +6,6 @@ namespace DandyRabbitMQ.Consumer;
 public sealed class ConsumerResult
 {
     private ConsumerResult() { }
-
     /// <summary>
     /// Gets the acknowledgement status.
     /// </summary>

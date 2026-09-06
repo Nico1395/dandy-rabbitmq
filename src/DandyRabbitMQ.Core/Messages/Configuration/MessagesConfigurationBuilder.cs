@@ -11,7 +11,6 @@ public sealed class MessagesConfigurationBuilder
     private readonly Dictionary<Type, MessageConfiguration> _messagesByRuntimeType = new();
     private readonly Dictionary<string, MessageConfiguration> _messagesByKey = new();
     private Assembly[] _assemblies = [];
-
     /// <summary>
     /// Initializes an empty message configuration builder.
     /// </summary>

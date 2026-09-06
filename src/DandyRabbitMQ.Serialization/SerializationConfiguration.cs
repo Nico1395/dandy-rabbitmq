@@ -20,7 +20,7 @@ public sealed class SerializationConfiguration
     /// <summary>
     /// Determines whether a payload serializer type has been configured.
     /// </summary>
-    /// <returns><see langword="true"/> when <see cref="PayloadSerializerType"/> is set; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> when <see cref="SerializationConfiguration.PayloadSerializerType"/> is set; otherwise, <see langword="false"/>.</returns>
     [MemberNotNullWhen(true, nameof(PayloadSerializerType))]
     public bool IsInitialized()
     {

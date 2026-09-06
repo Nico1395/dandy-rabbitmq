@@ -6,7 +6,6 @@ namespace DandyRabbitMQ.Serialization;
 public sealed class SerializationConfigurationBuilder
 {
     private readonly SerializationConfiguration _configuration = new();
-
     /// <summary>
     /// Selects the payload serializer and its optional configuration.
     /// </summary>

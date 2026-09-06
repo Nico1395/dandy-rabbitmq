@@ -6,7 +6,6 @@ namespace DandyRabbitMQ.Core.Encoding.Configuration;
 public sealed class EncodingConfigurationBuilder
 {
     private readonly EncodingConfiguration _configuration = new();
-
     /// <summary>
     /// Selects the payload encoder implementation.
     /// </summary>

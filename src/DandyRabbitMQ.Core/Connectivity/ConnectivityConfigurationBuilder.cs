@@ -8,7 +8,6 @@ namespace DandyRabbitMQ.Core.Connectivity;
 public sealed class ConnectivityConfigurationBuilder
 {
     private readonly ConnectivityConfiguration _configuration = new();
-
     /// <summary>
     /// Facade to configure a connection to a cluster of multiple RabbitMQ <paramref name="nodes"/> using <paramref name="userName"/>
     /// and <paramref name="password"/>.
@@ -46,7 +45,7 @@ public sealed class ConnectivityConfigurationBuilder
         factory(_configuration.ConnectionFactoryInternal);
         return this;
     }
-    
+
     /// <summary>
     /// Allows overwriting the underlying, internally used <see cref="ConnectionFactory"/>.
     /// </summary>

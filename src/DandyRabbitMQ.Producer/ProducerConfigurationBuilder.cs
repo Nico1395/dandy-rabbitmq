@@ -12,7 +12,6 @@ namespace DandyRabbitMQ.Producer;
 public sealed class ProducerConfigurationBuilder
 {
     private readonly ProducerConfiguration _configuration = new();
-
     /// <summary>
     /// Gets or sets the payload serialization configuration.
     /// </summary>

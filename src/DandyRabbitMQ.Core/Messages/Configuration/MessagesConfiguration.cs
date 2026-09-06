@@ -12,10 +12,12 @@ public sealed class MessagesConfiguration
     /// Gets or sets message metadata indexed by runtime type.
     /// </summary>
     public required ConcurrentDictionary<Type, MessageConfiguration> MessagesByRuntimeType { get; set; }
+
     /// <summary>
     /// Gets or sets message metadata indexed by message key.
     /// </summary>
     public required ConcurrentDictionary<string, MessageConfiguration> MessagesByKey { get; set; }
+
     /// <summary>
     /// Gets or sets assemblies scanned for attributed message types.
     /// </summary>

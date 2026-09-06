@@ -13,23 +13,26 @@ namespace DandyRabbitMQ.Consumer.Configuration;
 public sealed class ConsumerConfigurationBuilder
 {
     private readonly ConsumerConfiguration _configuration = new();
-
     /// <summary>
     /// Gets or sets payload serialization configuration.
     /// </summary>
     public SerializationConfigurationBuilder Serialization { get; set; } = new();
+
     /// <summary>
     /// Gets or sets RabbitMQ connectivity configuration.
     /// </summary>
     public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
+
     /// <summary>
     /// Gets or sets message metadata configuration.
     /// </summary>
     public MessagesConfigurationBuilder Messages { get; set; } = new();
+
     /// <summary>
     /// Gets or sets payload encoding configuration.
     /// </summary>
     public EncodingConfigurationBuilder Encoding { get; set; } = new();
+
     /// <summary>
     /// Gets or sets declaration configuration.
     /// </summary>

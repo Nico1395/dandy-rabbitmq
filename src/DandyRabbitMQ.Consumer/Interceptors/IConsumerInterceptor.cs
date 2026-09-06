@@ -14,6 +14,7 @@ public interface IConsumerInterceptor
     /// <param name="cancellationToken">The token used to cancel interception.</param>
     /// <returns>A task representing the asynchronous interception.</returns>
     Task OnAfterAckAsync(object message, ConsumerContext context, ConsumerResult result, CancellationToken cancellationToken);
+
     /// <summary>
     /// Runs after a <paramref name="message"/> is negatively acknowledged.
     /// </summary>

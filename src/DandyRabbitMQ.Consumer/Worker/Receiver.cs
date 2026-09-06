@@ -46,7 +46,7 @@ public class Receiver(
 
             if (!messagesConfiguration.MessagesByKey.TryGetValue(args.BasicProperties.Type, out var messageConfiguration))
                 throw new InvalidOperationException("Failed to resolve message type.");
-            
+
             var serialized = payloadEncoder.Decode(args.Body.Span);
             if (string.IsNullOrWhiteSpace(serialized))
                 throw new InvalidOperationException("Failed to deserialize message.");

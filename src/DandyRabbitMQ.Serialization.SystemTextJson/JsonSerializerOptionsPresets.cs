@@ -21,7 +21,7 @@ public static class JsonSerializerOptionsPresets
     /// <summary>
     /// Creates options configured with polymorphic type information.
     /// </summary>
-    /// <returns>Serializer options using the resolver returned by <see cref="CreateTypeInfoResolver"/>.</returns>
+    /// <returns>Serializer options using the resolver returned by <see cref="JsonSerializerOptionsPresets.CreateTypeInfoResolver()"/>.</returns>
     public static JsonSerializerOptions WithTypeInfoResolver()
     {
         return new JsonSerializerOptions

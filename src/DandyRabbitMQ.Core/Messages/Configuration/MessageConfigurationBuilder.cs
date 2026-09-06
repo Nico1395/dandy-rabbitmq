@@ -9,7 +9,6 @@ public sealed class MessageConfigurationBuilder
 {
     private readonly ConcurrentDictionary<string, object> _metadata;
     private readonly MessageConfiguration _message;
-
     /// <summary>
     /// Initializes a builder for a message type.
     /// </summary>
@@ -46,7 +45,7 @@ public sealed class MessageConfigurationBuilder
         _message.Exchange = exchange;
         return this;
     }
-    
+
     /// <summary>
     /// Sets the message routing keys.
     /// </summary>

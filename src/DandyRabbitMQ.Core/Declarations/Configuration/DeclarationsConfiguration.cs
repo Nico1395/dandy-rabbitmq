@@ -8,7 +8,6 @@ namespace DandyRabbitMQ.Core.Declarations.Configuration;
 public sealed class DeclarationsConfiguration
 {
     internal ConcurrentDictionary<string, ChannelConfiguration> Channels { get; } = new();
-
     /// <summary>
     /// Gets channel configurations indexed by queue name.
     /// </summary>
