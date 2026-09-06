@@ -58,7 +58,7 @@ builder.Services.AddDandyRabbitMQConsumer(cfg =>
 });
 ```
 
-# AI-Disclaimers
+# Use of AI
 This section briefly outlines how AI was used for writing this framework. If an aspect if writing is not mentioned down below, it wasn't done using AI.
 
 ## Unit tests
