@@ -1,5 +1,6 @@
 using System.Reflection;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
@@ -12,10 +13,9 @@ public sealed class ConsumerConfiguration
     internal ConnectivityConfigurationBuilder ConnectivityConfigurationBuilder { get; set; } = new();
     internal MessagesConfigurationBuilder MessagesConfigurationBuilder { get; set; } = new();
     internal EncodingConfigurationBuilder EncodingConfigurationBuilder { get; set; } = new();
-    
-    public Func<string, Type>? TypeFactory { get; internal set; }
+    internal DeclarationsConfigurationBuilder DeclarationsConfigurationBuilder { get; set; } = new();
+
     public Assembly[]? Assemblies { get; internal set; }
-    public ChannelConfiguration[]? Channels { get; internal set; }
     public Type? ConsumerInterceptorType { get; internal set; }
 
     public Action<IServiceProvider, Exception>? OnExceptionWhenInitializingWorker { get; internal set; }

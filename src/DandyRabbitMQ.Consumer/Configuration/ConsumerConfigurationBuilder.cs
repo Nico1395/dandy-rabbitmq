@@ -1,5 +1,6 @@
 using System.Reflection;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
@@ -14,14 +15,9 @@ public sealed class ConsumerConfigurationBuilder
     public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
     public MessagesConfigurationBuilder Messages { get; set; } = new();
     public EncodingConfigurationBuilder Encoding { get; set; } = new();
+    public DeclarationsConfigurationBuilder Declarations { get; set; } = new();
 
-    public ConsumerConfigurationBuilder UseTypeFactory(Func<string, Type> factory)
-    {
-        _configuration.TypeFactory = factory;
-        return this;
-    }
-
-    public ConsumerConfigurationBuilder UseTypeNameFactory(Type interceptorType)
+    public ConsumerConfigurationBuilder UseConsumerInterceptor(Type interceptorType)
     {
         _configuration.ConsumerInterceptorType = interceptorType;
         return this;
@@ -30,18 +26,6 @@ public sealed class ConsumerConfigurationBuilder
     public ConsumerConfigurationBuilder ScanInAssemblies(params Assembly[] assemblies)
     {
         Messages.ScanInAssemblies(_configuration.Assemblies = assemblies);
-        return this;
-    }
-
-    public ConsumerConfigurationBuilder SubscribeChannel(Action<ChannelConfiguration> channelAction)
-    {
-        var channel = new ChannelConfiguration();
-        channelAction(channel);
-
-        _configuration.Channels = _configuration.Channels != null
-            ? _configuration.Channels.Concat([channel]).ToArray()
-            : [channel];
-
         return this;
     }
 
@@ -75,6 +59,7 @@ public sealed class ConsumerConfigurationBuilder
         _configuration.ConnectivityConfigurationBuilder = Connectivity;
         _configuration.MessagesConfigurationBuilder = Messages;
         _configuration.EncodingConfigurationBuilder = Encoding;
+        _configuration.DeclarationsConfigurationBuilder = Declarations;
 
         return _configuration;
     }
