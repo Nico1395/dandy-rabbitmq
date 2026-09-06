@@ -1,68 +1,104 @@
 using System.Reflection;
 using DandyRabbitMQ.Core.Connectivity;
+using DandyRabbitMQ.Core.Connectivity.Configuration;
+using DandyRabbitMQ.Core.Declarations.Configuration;
 using DandyRabbitMQ.Core.Encoding.Configuration;
 using DandyRabbitMQ.Core.Messages.Configuration;
 using DandyRabbitMQ.Serialization;
 
 namespace DandyRabbitMQ.Consumer.Configuration;
 
+/// <summary>
+/// Builds consumer service configuration.
+/// </summary>
 public sealed class ConsumerConfigurationBuilder
 {
     private readonly ConsumerConfiguration _configuration = new();
-
+    /// <summary>
+    /// Gets or sets payload serialization configuration.
+    /// </summary>
     public SerializationConfigurationBuilder Serialization { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets RabbitMQ connectivity configuration.
+    /// </summary>
     public ConnectivityConfigurationBuilder Connectivity { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets message metadata configuration.
+    /// </summary>
     public MessagesConfigurationBuilder Messages { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets payload encoding configuration.
+    /// </summary>
     public EncodingConfigurationBuilder Encoding { get; set; } = new();
 
-    public ConsumerConfigurationBuilder UseTypeFactory(Func<string, Type> factory)
-    {
-        _configuration.TypeFactory = factory;
-        return this;
-    }
+    /// <summary>
+    /// Gets or sets declaration configuration.
+    /// </summary>
+    public DeclarationsConfigurationBuilder Declarations { get; set; } = new();
 
-    public ConsumerConfigurationBuilder UseTypeNameFactory(Type interceptorType)
+    /// <summary>
+    /// Sets the consumer interceptor type.
+    /// </summary>
+    /// <param name="interceptorType">The interceptor implementation type.</param>
+    /// <returns>This builder.</returns>
+    public ConsumerConfigurationBuilder UseConsumerInterceptor(Type interceptorType)
     {
         _configuration.ConsumerInterceptorType = interceptorType;
         return this;
     }
 
+    /// <summary>
+    /// Sets <paramref name="assemblies"/> scanned for consumers and messages.
+    /// </summary>
+    /// <param name="assemblies">The assemblies to scan.</param>
+    /// <returns>This builder.</returns>
     public ConsumerConfigurationBuilder ScanInAssemblies(params Assembly[] assemblies)
     {
         Messages.ScanInAssemblies(_configuration.Assemblies = assemblies);
         return this;
     }
 
-    public ConsumerConfigurationBuilder SubscribeChannel(Action<ChannelConfiguration> channelAction)
-    {
-        var channel = new ChannelConfiguration();
-        channelAction(channel);
-
-        _configuration.Channels = _configuration.Channels != null
-            ? _configuration.Channels.Concat([channel]).ToArray()
-            : [channel];
-
-        return this;
-    }
-
+    /// <summary>
+    /// Sets the worker initialization exception <paramref name="handler"/>.
+    /// </summary>
+    /// <param name="handler">The exception handler.</param>
+    /// <returns>This builder.</returns>
     public ConsumerConfigurationBuilder OnExceptionWhenInitializingWorker(Action<IServiceProvider, Exception> handler)
     {
         _configuration.OnExceptionWhenInitializingWorker = handler;
         return this;
     }
 
+    /// <summary>
+    /// Sets the message receiving exception <paramref name="handler"/>.
+    /// </summary>
+    /// <param name="handler">The exception handler.</param>
+    /// <returns>This builder.</returns>
     public ConsumerConfigurationBuilder OnExceptionWhenReceivingMessage(Action<IServiceProvider, Exception> handler)
     {
         _configuration.OnExceptionWhenReceivingMessage = handler;
         return this;
     }
 
+    /// <summary>
+    /// Sets the acknowledgement exception <paramref name="handler"/>.
+    /// </summary>
+    /// <param name="handler">The exception handler.</param>
+    /// <returns>This builder.</returns>
     public ConsumerConfigurationBuilder OnExceptionWhenAckOrNack(Action<IServiceProvider, Exception> handler)
     {
         _configuration.OnExceptionWhenAckOrNack = handler;
         return this;
     }
 
+    /// <summary>
+    /// Sets the interceptor exception <paramref name="handler"/>.
+    /// </summary>
+    /// <param name="handler">The exception handler.</param>
+    /// <returns>This builder.</returns>
     public ConsumerConfigurationBuilder OnExceptionWhenIntercepting(Action<IServiceProvider, Exception> handler)
     {
         _configuration.OnExceptionWhenIntercepting = handler;
@@ -75,6 +111,7 @@ public sealed class ConsumerConfigurationBuilder
         _configuration.ConnectivityConfigurationBuilder = Connectivity;
         _configuration.MessagesConfigurationBuilder = Messages;
         _configuration.EncodingConfigurationBuilder = Encoding;
+        _configuration.DeclarationsConfigurationBuilder = Declarations;
 
         return _configuration;
     }

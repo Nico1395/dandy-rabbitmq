@@ -1,5 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <EnablePackageValidation>true</EnablePackageValidation>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>DandyRabbitMQ.Serialization.SystemTextJson</PackageId>
+        <Authors>Nicolai Wolf</Authors>
+        <Description>.NET library aiming to make the use of RabbitMQ easier.</Description>
+        <RepositoryUrl>https://github.com/Nico1395/dandy-rabbitmq</RepositoryUrl>
+        <PackageTags>rabbitmq</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\DandyRabbitMQ.Serialization\DandyRabbitMQ.Serialization.csproj" />
     </ItemGroup>

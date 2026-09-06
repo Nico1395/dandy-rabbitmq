@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DandyRabbitMQ.Producer;
+using DandyRabbitMQ.Producer.Configuration;
 using DandyRabbitMQ.Sample.Producer;
 using DandyRabbitMQ.Serialization.SystemTextJson;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,10 @@ builder.Services.AddDandyRabbitMQProducer(cfg =>
     cfg.Connectivity.ConnectToCluster("dev", "dev", [new Uri("localhost:5672"), new Uri("localhost:5673")], recoveryInterval: null);
     cfg.Connectivity.OnConnectionException((_, ex) => Console.WriteLine($"Exception occurred: {ex}"));
     cfg.Serialization.UseSystemTextJson();
+    cfg.Declarations.SubscribeChannel("messages", "consumer-1", channel =>
+    {
+        channel.Queue.RoutingKeys = ["all"];
+    });
     cfg.Messages.ScanInAssemblies(assemblies);
 });
 
