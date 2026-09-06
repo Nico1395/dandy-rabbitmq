@@ -37,7 +37,7 @@ public readonly struct DispatchInfo
     public BasicProperties Properties { get; }
 
     /// <summary>
-    /// Resolves publication settings from message configuration and explicit values.
+    /// Resolves publication settings from <paramref name="message"/> configuration and explicit values.
     /// </summary>
     /// <param name="messagesConfiguration">The configured message metadata.</param>
     /// <param name="exchange">The exchange, or <see langword="null"/> to use configured metadata.</param>
@@ -45,7 +45,7 @@ public readonly struct DispatchInfo
     /// <param name="message">The message to publish.</param>
     /// <param name="properties">The AMQP properties, or <see langword="null"/> to create default properties.</param>
     /// <returns>The resolved dispatch information.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when required message, routing key, or exchange metadata cannot be resolved.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when required <paramref name="message"/>, routing key, or <paramref name="exchange"/> metadata cannot be resolved.</exception>
     public static DispatchInfo Create(MessagesConfiguration messagesConfiguration, string? exchange, IEnumerable<string>? routingKeys, object message, BasicProperties? properties)
     {
         properties ??= new BasicProperties();

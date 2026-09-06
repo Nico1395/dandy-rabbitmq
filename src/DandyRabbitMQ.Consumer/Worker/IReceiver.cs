@@ -4,10 +4,14 @@ using RabbitMQ.Client.Events;
 
 namespace DandyRabbitMQ.Consumer.Worker;
 
-/// <summary>Receives and processes RabbitMQ deliveries.</summary>
+/// <summary>
+/// Receives and processes RabbitMQ deliveries.
+/// </summary>
 public interface IReceiver
 {
-    /// <summary>Processes a RabbitMQ delivery.</summary>
+    /// <summary>
+    /// Processes a RabbitMQ delivery.
+    /// </summary>
     /// <param name="args">The delivery event arguments.</param>
     /// <param name="ackLock">The lock protecting channel acknowledgements.</param>
     /// <param name="channel">The RabbitMQ channel.</param>

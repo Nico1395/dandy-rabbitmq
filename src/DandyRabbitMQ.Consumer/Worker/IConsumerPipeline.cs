@@ -1,9 +1,13 @@
 namespace DandyRabbitMQ.Consumer.Worker;
 
-/// <summary>Executes consumers and their middleware pipeline.</summary>
+/// <summary>
+/// Executes consumers and their middleware pipeline.
+/// </summary>
 public interface IConsumerPipeline
 {
-    /// <summary>Executes the pipeline for a message.</summary>
+    /// <summary>
+    /// Executes the pipeline for a <paramref name="message"/>.
+    /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <param name="message">The message to process.</param>
     /// <param name="context">The delivery context.</param>

@@ -9,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DandyRabbitMQ.Consumer.Configuration;
 
-/// <summary>Provides dependency injection registration extensions for consumers.</summary>
+/// <summary>
+/// Provides dependency injection registration extensions for consumers.
+/// </summary>
 public static class ConsumerServiceCollectionExtensions
 {
     private static readonly IReadOnlyList<Type> _typesToRegister =
@@ -19,7 +21,9 @@ public static class ConsumerServiceCollectionExtensions
         typeof(IConsumerExceptionHandler<>),
     ];
 
-    /// <summary>Adds and configures DandyRabbitMQ consumer services.</summary>
+    /// <summary>
+    /// Adds and configures DandyRabbitMQ consumer <paramref name="services"/>.
+    /// </summary>
     /// <param name="services">The service collection to update.</param>
     /// <param name="builderAction">An action that configures the consumer.</param>
     /// <returns>The updated service collection.</returns>

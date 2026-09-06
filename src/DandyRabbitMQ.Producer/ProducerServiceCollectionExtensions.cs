@@ -13,7 +13,7 @@ namespace DandyRabbitMQ.Producer;
 public static class ProducerServiceCollectionExtensions
 {
     /// <summary>
-    /// Adds and configures DandyRabbitMQ producer services.
+    /// Adds and configures DandyRabbitMQ producer <paramref name="services"/>.
     /// </summary>
     /// <param name="services">The service collection to update.</param>
     /// <param name="builderAction">An action that configures the producer.</param>

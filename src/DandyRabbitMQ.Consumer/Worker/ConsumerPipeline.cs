@@ -2,7 +2,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DandyRabbitMQ.Consumer.Worker;
 
-/// <summary>Executes consumers and middleware resolved from dependency injection.</summary>
+/// <summary>
+/// Executes consumers and middleware resolved from dependency injection.
+/// </summary>
 public class ConsumerPipeline(IServiceProvider serviceProvider) : IConsumerPipeline
 {
     /// <inheritdoc/>

@@ -7,7 +7,7 @@ namespace DandyRabbitMQ.Consumer;
 public interface IConsumerMiddleware<in TMessage>
 {
     /// <summary>
-    /// Processes a message and optionally invokes the next pipeline step.
+    /// Processes a <paramref name="message"/> and optionally invokes the next pipeline step.
     /// </summary>
     /// <param name="message">The message to process.</param>
     /// <param name="context">The delivery context.</param>

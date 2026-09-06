@@ -8,7 +8,7 @@ namespace DandyRabbitMQ.Producer;
 public interface IProducer
 {
     /// <summary>
-    /// Publishes a message to the specified exchange and routing keys.
+    /// Publishes a <paramref name="message"/> to the specified <paramref name="exchange"/> and routing keys.
     /// </summary>
     /// <param name="exchange">The target exchange, or <see langword="null"/> to resolve it from message metadata.</param>
     /// <param name="routingKeys">The target routing keys, or <see langword="null"/> to resolve them from message metadata.</param>

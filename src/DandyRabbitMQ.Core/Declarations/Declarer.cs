@@ -4,12 +4,16 @@ using RabbitMQ.Client;
 
 namespace DandyRabbitMQ.Core.Declarations;
 
-/// <summary>Declares configured RabbitMQ topology.</summary>
+/// <summary>
+/// Declares configured RabbitMQ topology.
+/// </summary>
 public class Declarer(
     IConnectionProvider connectionProvider,
     DeclarationsConfiguration declarationsConfiguration) : IDeclarer
 {
-    /// <summary>Declares the queue and its associated exchange and bindings.</summary>
+    /// <summary>
+    /// Declares the queue and its associated exchange and bindings.
+    /// </summary>
     /// <param name="queueName">The configured queue name.</param>
     /// <param name="channel">The channel to use, or <see langword="null"/> to create one.</param>
     /// <param name="cancellationToken">The token used to cancel declaration.</param>

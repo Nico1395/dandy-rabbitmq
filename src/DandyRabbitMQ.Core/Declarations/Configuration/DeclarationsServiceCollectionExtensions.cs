@@ -2,10 +2,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DandyRabbitMQ.Core.Declarations.Configuration;
 
-/// <summary>Provides dependency injection registration extensions for declarations.</summary>
+/// <summary>
+/// Provides dependency injection registration extensions for declarations.
+/// </summary>
 public static class DeclarationsServiceCollectionExtensions
 {
-    /// <summary>Adds and configures declaration services.</summary>
+    /// <summary>
+    /// Adds and configures declaration <paramref name="services"/>.
+    /// </summary>
     /// <param name="services">The service collection to update.</param>
     /// <param name="builderAction">An action that configures declarations.</param>
     /// <returns>The updated service collection.</returns>
@@ -18,7 +22,9 @@ public static class DeclarationsServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>Adds declaration services from an existing configuration.</summary>
+    /// <summary>
+    /// Adds declaration <paramref name="services"/> from an existing <paramref name="configuration"/>.
+    /// </summary>
     /// <param name="services">The service collection to update.</param>
     /// <param name="configuration">The declaration configuration.</param>
     /// <returns>The updated service collection.</returns>

@@ -9,7 +9,7 @@ namespace DandyRabbitMQ.Producer;
 public static class ProducerExtensions
 {
     /// <summary>
-    /// Publishes a message with a string identifier and timestamp.
+    /// Publishes a <paramref name="message"/> with a string identifier and <paramref name="timestamp"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -31,7 +31,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with one routing key, string identifier, and timestamp.
+    /// Publishes a <paramref name="message"/> with one routing key, string identifier, and <paramref name="timestamp"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -53,7 +53,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with custom properties, string identifier, and timestamp.
+    /// Publishes a <paramref name="message"/> with custom <paramref name="properties"/>, string identifier, and <paramref name="timestamp"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -75,7 +75,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with one routing key, custom properties, string identifier, and timestamp.
+    /// Publishes a <paramref name="message"/> with one routing key, custom <paramref name="properties"/>, string identifier, and <paramref name="timestamp"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -97,7 +97,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message using a generated string representation of a GUID identifier.
+    /// Publishes a <paramref name="message"/> using a generated string representation of a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="id">The message identifier.</param>
@@ -111,7 +111,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with routing keys and a GUID identifier.
+    /// Publishes a <paramref name="message"/> with routing keys and a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -127,7 +127,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with one routing key and a GUID identifier.
+    /// Publishes a <paramref name="message"/> with one routing key and a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -143,7 +143,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with custom properties and a GUID identifier.
+    /// Publishes a <paramref name="message"/> with custom <paramref name="properties"/> and a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="id">The message identifier.</param>
@@ -158,7 +158,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with routing keys, custom properties, and a GUID identifier.
+    /// Publishes a <paramref name="message"/> with routing keys, custom <paramref name="properties"/>, and a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -175,7 +175,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes a message with one routing key, custom properties, and a GUID identifier.
+    /// Publishes a <paramref name="message"/> with one routing key, custom <paramref name="properties"/>, and a GUID identifier.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -232,7 +232,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes an <see cref="IMessage"/> with custom properties.
+    /// Publishes an <see cref="IMessage"/> with custom <paramref name="properties"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -247,7 +247,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes an <see cref="IMessage"/> to one routing key with custom properties.
+    /// Publishes an <see cref="IMessage"/> to one routing key with custom <paramref name="properties"/>.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="exchange">The target exchange, or <see langword="null"/>.</param>
@@ -262,7 +262,7 @@ public static class ProducerExtensions
     }
 
     /// <summary>
-    /// Publishes an <see cref="IMessage"/> with custom properties using its metadata.
+    /// Publishes an <see cref="IMessage"/> with custom <paramref name="properties"/> using its metadata.
     /// </summary>
     /// <param name="producer">The producer to use.</param>
     /// <param name="message">The message to publish.</param>

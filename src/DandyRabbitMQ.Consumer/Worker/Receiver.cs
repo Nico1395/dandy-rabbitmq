@@ -13,7 +13,9 @@ using RabbitMQ.Client.Events;
 
 namespace DandyRabbitMQ.Consumer.Worker;
 
-/// <summary>Receives deliveries, invokes consumers, and acknowledges results.</summary>
+/// <summary>
+/// Receives deliveries, invokes consumers, and acknowledges results.
+/// </summary>
 public class Receiver(
     ConsumerConfiguration consumerConfiguration,
     MessagesConfiguration messagesConfiguration,

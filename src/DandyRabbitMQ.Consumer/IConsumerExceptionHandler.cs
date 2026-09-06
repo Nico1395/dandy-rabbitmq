@@ -7,7 +7,7 @@ namespace DandyRabbitMQ.Consumer;
 public interface IConsumerExceptionHandler<in TMessage>
 {
     /// <summary>
-    /// Handles a consumer exception.
+    /// Handles a consumer <paramref name="exception"/>.
     /// </summary>
     /// <param name="message">The message being consumed.</param>
     /// <param name="context">The delivery context.</param>

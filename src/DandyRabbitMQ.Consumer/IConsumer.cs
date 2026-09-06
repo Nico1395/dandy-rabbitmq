@@ -7,7 +7,7 @@ namespace DandyRabbitMQ.Consumer;
 public interface IConsumer<in TMessage>
 {
     /// <summary>
-    /// Processes a message.
+    /// Processes a <paramref name="message"/>.
     /// </summary>
     /// <param name="message">The message to consume.</param>
     /// <param name="context">The delivery context.</param>

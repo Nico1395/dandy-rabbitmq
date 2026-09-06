@@ -1,6 +1,8 @@
 namespace DandyRabbitMQ.Consumer.Interceptors;
 
-/// <summary>Provides no-op hooks for consumer acknowledgement interception.</summary>
+/// <summary>
+/// Provides no-op hooks for consumer acknowledgement interception.
+/// </summary>
 public abstract class ConsumerInterceptor : IConsumerInterceptor
 {
     /// <inheritdoc/>
