@@ -4,10 +4,18 @@ using RabbitMQ.Client;
 
 namespace DandyRabbitMQ.Core.Declarations;
 
+/// <summary>Declares configured RabbitMQ topology.</summary>
 public class Declarer(
     IConnectionProvider connectionProvider,
     DeclarationsConfiguration declarationsConfiguration) : IDeclarer
 {
+    /// <summary>Declares the queue and its associated exchange and bindings.</summary>
+    /// <param name="queueName">The configured queue name.</param>
+    /// <param name="channel">The channel to use, or <see langword="null"/> to create one.</param>
+    /// <param name="cancellationToken">The token used to cancel declaration.</param>
+    /// <returns>A task representing the asynchronous declaration.</returns>
+    /// <exception cref="ArgumentException">Thrown when no configuration exists for <paramref name="queueName"/>.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when queue routing keys are not configured.</exception>
     public async Task DeclareQueueAsync(string queueName, IChannel? channel, CancellationToken cancellationToken)
     {
         if (!declarationsConfiguration.ChannelsByQueueName.TryGetValue(queueName, out var channelConfiguration))

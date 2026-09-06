@@ -4,8 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DandyRabbitMQ.Core.Messages.Configuration;
 
+/// <summary>Provides dependency injection registration extensions for message metadata.</summary>
 public static class MessageServiceCollectionExtensions
 {
+    /// <summary>Adds and configures message metadata.</summary>
+    /// <param name="services">The service collection to update.</param>
+    /// <param name="builderAction">An action that configures message metadata.</param>
+    /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddDandyRabbitMQMessages(this IServiceCollection services, Action<MessagesConfigurationBuilder> builderAction)
     {
         var builder = new MessagesConfigurationBuilder();
@@ -15,6 +20,10 @@ public static class MessageServiceCollectionExtensions
         return services.AddDandyRabbitMQMessages(configuration);
     }
 
+    /// <summary>Adds message metadata from an existing configuration.</summary>
+    /// <param name="services">The service collection to update.</param>
+    /// <param name="configuration">The message configuration.</param>
+    /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddDandyRabbitMQMessages(this IServiceCollection services, MessagesConfiguration configuration)
     {
         var previous = services.BuildServiceProvider().GetService<MessagesConfiguration>();

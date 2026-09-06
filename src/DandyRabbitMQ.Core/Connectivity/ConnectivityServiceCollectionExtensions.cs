@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DandyRabbitMQ.Core.Connectivity;
 
+/// <summary>Provides dependency injection registration extensions for connectivity.</summary>
 public static class ConnectivityServiceCollectionExtensions
 {
     /// <summary>

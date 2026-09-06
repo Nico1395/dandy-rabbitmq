@@ -69,5 +69,7 @@ public sealed class ConnectivityConfigurationBuilder
         return this;
     }
 
+    /// <summary>Builds the connectivity configuration.</summary>
+    /// <returns>The connectivity configuration.</returns>
     public ConnectivityConfiguration Build() => _configuration;
 }

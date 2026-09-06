@@ -6,6 +6,9 @@ using DandyRabbitMQ.Serialization;
 
 namespace DandyRabbitMQ.Producer;
 
+/// <summary>
+/// Stores the configuration used to register producer services.
+/// </summary>
 public sealed class ProducerConfiguration
 {
     internal SerializationConfigurationBuilder SerializationConfigurationBuilder { get; set; } = new();
